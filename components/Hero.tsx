@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { profile } from "@/lib/data";
@@ -15,7 +16,7 @@ export default function Hero() {
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
   const y = useTransform(scrollY, [0, 500], [0, -40]);
 
-  const headingWords = "Devadevan B P".split(" ");
+  const headingWords = profile.headline.split(" ");
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -52,18 +53,18 @@ export default function Hero() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
           <span className="mono-tag text-xs uppercase tracking-[0.25em] text-text-secondary">
-            {profile.role}
+            {profile.name} · {profile.role}
           </span>
         </motion.div>
 
-        {/* Large Cinematic Heading with blur-to-sharp fade in */}
-        <h1 className="font-display font-bold leading-[0.9] tracking-tight text-white mb-6 select-none text-[64px] md:text-[100px] lg:text-[130px]">
+        {/* Large Cinematic Headline with blur-to-sharp fade in */}
+        <h1 className="font-display font-bold leading-[1.0] tracking-tight text-white mb-6 select-none text-[48px] md:text-[72px] lg:text-[90px] max-w-4xl text-center">
           {headingWords.map((word, i) => (
             <motion.span
-              key={word}
+              key={`${word}-${i}`}
               initial={{ filter: "blur(12px)", opacity: 0, y: 30 }}
               animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.15 }}
+              transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.12 }}
               className="inline-block mx-2 text-gradient"
             >
               {word}
@@ -74,8 +75,8 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.7 }}
-          className="mt-4 max-w-2xl font-body text-base leading-relaxed text-text-secondary md:text-lg text-center"
+          transition={{ duration: 0.9, ease, delay: 1.0 }}
+          className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-text-secondary md:text-base text-center"
         >
           {profile.summary}
         </motion.p>
@@ -84,15 +85,15 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.9 }}
+          transition={{ duration: 0.9, ease, delay: 1.2 }}
           className="mt-12 flex flex-wrap justify-center items-center gap-4"
         >
           <a
             href="#journey"
             onClick={(e) => handleScroll(e, "#journey")}
-            className="group relative"
+            className="group relative focus-visible:outline-none"
           >
-            <SpotlightCard className="rounded-pill border border-border-subtle bg-white/[0.02] px-8 py-4 font-body text-sm font-semibold text-white transition-all duration-300 hover:border-accent/40 shadow-glow">
+            <SpotlightCard className="rounded-pill border border-border-subtle bg-white/[0.01] px-8 py-4 font-body text-xs uppercase tracking-wider font-semibold text-white transition-all duration-300 hover:border-accent/40 shadow-glow">
               <span className="flex items-center gap-2">
                 Enter Journey
                 <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -106,7 +107,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.4 }}
-        transition={{ duration: 1, ease, delay: 1.2 }}
+        transition={{ duration: 1, ease, delay: 1.4 }}
         className="pointer-events-none absolute bottom-12 right-6 hidden md:block md:right-12"
       >
         <div className="relative h-20 w-44 rounded-md border border-white/5 bg-white/[0.01] backdrop-blur-sm">

@@ -19,13 +19,14 @@ import {
   Workflow,
   Code2,
   FolderOpen,
-  CloudLightning
+  CloudLightning,
+  Activity,
+  GitBranch
 } from "lucide-react";
-import { projects, education, profile, chapters, ChapterId, Chapter } from "@/lib/data";
+import { projects, education, profile, chapters, principles, ChapterId } from "@/lib/data";
 import { useJourneyProgress } from "@/lib/useJourneyProgress";
 import SpotlightCard from "./SpotlightCard";
 
-// Visual props
 interface VisualProps {
   active: boolean;
 }
@@ -40,10 +41,14 @@ export default function EngineeringJourney() {
   });
 
   // Extract journey state from progress hook
-  const { activeChapter, activeStep, isDesktop } = useJourneyProgress(scrollYProgress);
+  const { activeChapter, activeStep } = useJourneyProgress(scrollYProgress);
 
   // SVG Drawing progress (height mapped)
-  const pathLength = useTransform(scrollYProgress, [0, 0.98], [0, 1]);
+  const pathLength = useTransform(scrollYProgress, [0, 0.97], [0, 1]);
+
+  // Cinematic "Final Scene" Fadeout of surrounding UI elements:
+  // As scroll progress goes past 0.96 to 0.98, the timeline bars, sidebars, and bezel outlines dissolve to 0 opacity.
+  const uiOpacity = useTransform(scrollYProgress, [0.96, 0.98], [1, 0]);
 
   return (
     <div ref={containerRef} className="relative min-h-[850vh] bg-bg-primary">
@@ -54,8 +59,11 @@ export default function EngineeringJourney() {
         {/* Left Side: Sticky Visualizer */}
         <div className="sticky top-0 flex h-screen w-[45%] items-center justify-center border-r border-border-subtle p-12 overflow-hidden bg-bg-primary">
           
-          {/* Timeline Node Sidebar (Left margin of the visualizer) */}
-          <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-20">
+          {/* Timeline Node Sidebar (Fades out in final credits stage) */}
+          <motion.div 
+            style={{ opacity: uiOpacity }}
+            className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-20 pointer-events-none"
+          >
             <div className="relative w-0.5 h-[320px] bg-white/5 rounded-full overflow-hidden">
               <motion.div 
                 style={{ scaleY: pathLength, originY: 0 }}
@@ -64,7 +72,7 @@ export default function EngineeringJourney() {
             </div>
             
             {/* Indicator icons built dynamically from configuration */}
-            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 flex flex-col justify-between py-1 pointer-events-none">
+            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 flex flex-col justify-between py-1">
               {chapters.slice(0, 7).map((ch) => {
                 let Icon = Lightbulb;
                 if (ch.id === "blueprint") Icon = MapIcon;
@@ -84,27 +92,30 @@ export default function EngineeringJourney() {
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
           {/* Main Visual Display Canvas */}
           <div className="relative w-full h-[70vh] rounded-card border border-border-subtle bg-surface/10 p-8 flex flex-col justify-between overflow-hidden shadow-layered backdrop-blur-sm">
             
-            {/* Screen bezel corner highlight */}
-            <span className="absolute left-3 top-3 h-2 w-2 border-l border-t border-white/20 pointer-events-none" />
-            <span className="absolute right-3 top-3 h-2 w-2 border-r border-t border-white/20 pointer-events-none" />
-            <span className="absolute left-3 bottom-3 h-2 w-2 border-l border-b border-white/20 pointer-events-none" />
-            <span className="absolute right-3 bottom-3 h-2 w-2 border-r border-b border-white/20 pointer-events-none" />
+            {/* Screen bezel corner highlight (Fades out in final stage) */}
+            <motion.span style={{ opacity: uiOpacity }} className="absolute left-3 top-3 h-2 w-2 border-l border-t border-white/20 pointer-events-none" />
+            <motion.span style={{ opacity: uiOpacity }} className="absolute right-3 top-3 h-2 w-2 border-r border-t border-white/20 pointer-events-none" />
+            <motion.span style={{ opacity: uiOpacity }} className="absolute left-3 bottom-3 h-2 w-2 border-l border-b border-white/20 pointer-events-none" />
+            <motion.span style={{ opacity: uiOpacity }} className="absolute right-3 bottom-3 h-2 w-2 border-r border-b border-white/20 pointer-events-none" />
             
-            {/* Header Telemetry bar */}
-            <div className="flex items-center justify-between border-b border-border-subtle pb-4 text-[10px] uppercase tracking-[0.2em] text-text-muted mono-tag font-mono">
+            {/* Header Telemetry bar (Fades out in final stage) */}
+            <motion.div 
+              style={{ opacity: uiOpacity }}
+              className="flex items-center justify-between border-b border-border-subtle pb-4 text-[10px] uppercase tracking-[0.2em] text-text-muted mono-tag font-mono pointer-events-none"
+            >
               <div className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                 <span>SYSTEM DIAGRAM VISUALIZER</span>
               </div>
               <div>STAGE: {activeChapter.toUpperCase()}</div>
-            </div>
+            </motion.div>
 
-            {/* Dynamic Stage Renderings (Framer Motion transitions) */}
+            {/* Dynamic Stage Renderings */}
             <div className="flex-1 flex items-center justify-center py-6 relative">
               <AnimatePresence mode="wait">
                 {activeChapter === "problem" && (
@@ -134,11 +145,14 @@ export default function EngineeringJourney() {
               </AnimatePresence>
             </div>
 
-            {/* Footer Telemetry bar */}
-            <div className="border-t border-border-subtle pt-3 flex items-center justify-between text-[9px] text-text-muted mono-tag font-mono">
+            {/* Footer Telemetry bar (Fades out in final stage) */}
+            <motion.div 
+              style={{ opacity: uiOpacity }}
+              className="border-t border-border-subtle pt-3 flex items-center justify-between text-[9px] text-text-muted mono-tag font-mono pointer-events-none"
+            >
               <span>RESOLUTION: ENGINE_CANVAS_v1.0</span>
               <span>RENDER: GPU_ACCELERATED</span>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -330,20 +344,25 @@ export default function EngineeringJourney() {
             </div>
           </section>
 
-          {/* Stage 7: Lessons Learned */}
+          {/* Stage 7: Engineering Principles (Lessons Learned / Philosophy) */}
           <section className="min-h-[100vh] flex flex-col justify-center py-[20vh]">
-            <span className="mono-tag text-xs uppercase tracking-[0.2em] text-accent mb-3">07 // Philosophy</span>
-            <h2 className="font-display text-4xl lg:text-5xl font-semibold leading-[1.1] tracking-tight text-white mb-6">
-              Lessons Learned
+            <span className="mono-tag text-xs uppercase tracking-[0.2em] text-accent mb-3">07 // Principles</span>
+            <h2 className="font-display text-4xl lg:text-5xl font-semibold leading-[1.1] tracking-tight text-white mb-8">
+              Engineering Principles
             </h2>
-            <p className="font-body text-base leading-relaxed text-text-secondary max-w-xl mb-8">
-              Building autonomous platforms like Forge AI and managing local computer vision architectures has reshaped my perspective on software development.
-            </p>
+            <div className="space-y-8 max-w-xl">
+              {principles.map((pr, idx) => (
+                <div key={idx} className="border-l-2 border-white/5 pl-4 hover:border-accent/40 transition-colors duration-300">
+                  <h3 className="font-display text-base font-semibold text-white mb-1.5">{pr.title}</h3>
+                  <p className="font-body text-xs text-text-secondary leading-relaxed">{pr.desc}</p>
+                </div>
+              ))}
+            </div>
           </section>
 
-          {/* Stage 8: Final Scene */}
-          <section id="contact" className="min-h-[100vh] flex flex-col justify-center py-[20vh]">
-            {/* Minimal spacing, text CTA is revealed by visual final node */}
+          {/* Stage 8: Final Scene with movie credits spacing */}
+          <section id="contact" className="min-h-[160vh] flex flex-col justify-center py-[20vh]">
+            {/* Empty right column: let visual visualizer capture full viewport center and fade in */}
           </section>
         </div>
       </div>
@@ -353,7 +372,6 @@ export default function EngineeringJourney() {
       <div className="md:hidden px-6 py-20 flex flex-col gap-16 relative">
         <div className="absolute left-10 top-24 bottom-24 w-0.5 bg-white/5" />
 
-        {/* mobile items mapping */}
         <div className="relative pl-12 space-y-20">
           
           <MobileSection title="01 // The Problem" icon={Lightbulb}>
@@ -371,7 +389,7 @@ export default function EngineeringJourney() {
           <MobileSection title="03 // Forge AI (Flagship)" icon={Cpu} highlighted>
             <div className="space-y-4">
               <p className="font-body text-sm leading-relaxed text-text-secondary font-medium">
-                An autonomous coding engine converting natural text requirements to production-ready deployed apps.
+                An autonomous coding engine converting natural text requirements to production-ready deployed apps using Docker, Caddy HTTPS, AWS EC2, and MongoDB Atlas.
               </p>
               <div className="border-l border-accent/20 pl-4 space-y-3 py-1">
                 <MobileStep title="User Input" desc='forge create app "CRM platform"' />
@@ -385,7 +403,7 @@ export default function EngineeringJourney() {
 
           <MobileSection title="04 // The Network" icon={Globe}>
             <p className="font-body text-sm leading-relaxed text-text-secondary">
-              Integrating real-time geocoding WebSockets (Civic Reporting System) and transactional PostgreSQL engines (E-Commerce Platform).
+              Integrating real-time geocoding WebSockets (Civic Reporting System) and transactional PostgreSQL engines (E-Commerce Platform), routing queries securely via Caddy reverse proxies.
             </p>
           </MobileSection>
 
@@ -408,12 +426,15 @@ export default function EngineeringJourney() {
             </div>
           </MobileSection>
 
-          <MobileSection title="07 // Lessons Learned" icon={BookOpen}>
-            <ul className="space-y-2 text-xs text-text-secondary font-body">
-              <li>• Prompt engineering is not enough: code structure determines stability.</li>
-              <li>• Latency is user retention: local GPU memory handling improves frame throughput.</li>
-              <li>• Deploy and monitor continuously: automation must be verified.</li>
-            </ul>
+          <MobileSection title="07 // Principles" icon={BookOpen}>
+            <div className="space-y-4 text-xs font-body text-text-secondary">
+              {principles.map((pr, idx) => (
+                <div key={idx} className="border-l border-white/10 pl-3">
+                  <h4 className="font-display text-white font-semibold text-xs mb-1">{pr.title}</h4>
+                  <p className="text-[11px] text-text-muted">{pr.desc}</p>
+                </div>
+              ))}
+            </div>
           </MobileSection>
 
           <MobileSection title="08 // Final Scene" icon={CheckCircle2}>
@@ -507,7 +528,6 @@ function MobileStep({ title, desc }: { title: string; desc: string }) {
 
 /* LEFT PANEL VISUAL SUB-COMPONENTS - MEMOIZED FOR PERFORMANCE */
 
-// 1. Discovery/Problem Visualizer
 const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps) {
   if (!active) return null;
 
@@ -520,7 +540,6 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
       className="w-full h-full flex flex-col items-center justify-center"
     >
       <svg className="w-56 h-56" viewBox="0 0 200 200" aria-label="System requirement congestion diagram">
-        {/* Chaotic input lines */}
         <motion.path 
           d="M 10 50 Q 70 80, 100 100" 
           stroke="rgba(79, 140, 255, 0.2)" 
@@ -549,7 +568,6 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
           transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 1.2 }}
         />
         
-        {/* Filtering node */}
         <circle cx="100" cy="100" r="14" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
         <motion.circle 
           cx="100" 
@@ -560,7 +578,6 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         />
         
-        {/* Output target line */}
         <motion.path 
           d="M 108 100 H 190" 
           stroke="#4f8cff" 
@@ -571,7 +588,6 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
           animate={{ pathLength: 1 }}
           transition={{ duration: 0.8 }}
         />
-        
         <circle cx="190" cy="100" r="3" fill="#4f8cff" />
       </svg>
       <div className="absolute bottom-6 font-mono text-[9px] text-text-secondary uppercase tracking-[0.1em]">
@@ -581,7 +597,6 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
   );
 });
 
-// 2. Blueprint/Architecture Design Visualizer
 const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualProps) {
   if (!active) return null;
 
@@ -630,7 +645,6 @@ const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualPr
   );
 });
 
-// 3. Forge AI Interactive Visualizer (Clickable Explorer)
 interface VisualForgeAIProps extends VisualProps {
   step: number;
 }
@@ -639,7 +653,6 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
   const [localStep, setLocalStep] = useState<number>(0);
   const [userInteracted, setUserInteracted] = useState<boolean>(false);
 
-  // Sync scroll step to local step only if user has not interacted manually
   useEffect(() => {
     if (!userInteracted) {
       setLocalStep(step);
@@ -669,7 +682,6 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
       transition={{ duration: 0.4 }}
       className="w-full h-full flex flex-col items-center justify-between p-2"
     >
-      {/* Interactive Tabs Selector */}
       <div className="flex gap-1.5 bg-white/[0.02] border border-white/5 rounded-pill p-1 mb-4 z-20">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -693,7 +705,6 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
         })}
       </div>
 
-      {/* Main Tab Details Window */}
       <div className="w-full max-w-sm flex-1 rounded-btn border border-border-subtle bg-bg-secondary/40 p-4 font-mono text-xs text-text-secondary flex flex-col justify-between overflow-y-auto min-h-0 select-text">
         <AnimatePresence mode="wait">
           {localStep === 0 && (
@@ -735,10 +746,9 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[React Frontend (SPA)] <span className="text-white">←(HTTP/WS)→</span> [FastAPI Router]</div>
-                <div className="pl-8 text-accent">|__ [PostgreSQL DB] (ORM Models)</div>
-                <div className="pl-8 text-accent">|__ [AWS S3 Storage] (User Uploads)</div>
-                <div className="pl-8 text-accent">|__ [Redis Cache] (WebSocket sessions)</div>
+                <div>[Next.js Client] <span className="text-white">←(HTTP/WS)→</span> [Caddy Proxy]</div>
+                <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
+                <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
             </motion.div>
           )}
@@ -810,21 +820,21 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
             >
               <div className="flex items-center justify-between text-[10px] text-green-400 uppercase tracking-wider font-semibold">
                 <span>5. DevOps Deployment Topology</span>
-                <span>STATUS: STABLE</span>
+                <span>STATUS: HTTPS_ONLINE</span>
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[10px] leading-relaxed text-text-secondary">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-3 w-3 text-green-400" />
-                  <span>CI/CD Pipeline tests passed.</span>
+                  <span>Docker containers verified & mapped.</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-3 w-3 text-green-400" />
-                  <span>AWS Elastic Container Task verified.</span>
+                  <span>Caddy SSL configuration active.</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-3 w-3 text-green-400" />
-                  <span>CloudFront invalidations completed.</span>
+                  <span>MongoDB Atlas connections verified.</span>
                 </div>
               </div>
             </motion.div>
@@ -848,7 +858,6 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
   );
 });
 
-// 4. Network/Fullstack Visualizer
 const VisualNetwork = React.memo(function VisualNetwork({ active }: VisualProps) {
   if (!active) return null;
 
@@ -891,7 +900,6 @@ const VisualNetwork = React.memo(function VisualNetwork({ active }: VisualProps)
   );
 });
 
-// 5. Edge AI / Computer Vision Visualizer
 const VisualEdge = React.memo(function VisualEdge({ active }: VisualProps) {
   if (!active) return null;
 
@@ -904,14 +912,12 @@ const VisualEdge = React.memo(function VisualEdge({ active }: VisualProps) {
       className="w-full h-full flex flex-col items-center justify-center"
     >
       <div className="relative border border-white/5 w-72 h-44 rounded-btn overflow-hidden bg-black/60 flex items-center justify-center shadow-layered">
-        {/* grid wireframe overlay */}
         <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 pointer-events-none opacity-10">
           {Array.from({ length: 24 }).map((_, i) => (
             <div key={i} className="border-[0.5px] border-white/30" />
           ))}
         </div>
         
-        {/* Bounding box mock */}
         <div className="relative border border-accent rounded h-28 w-28 flex flex-col justify-between p-1.5 shadow-[0_0_15px_rgba(79,140,255,0.15)]">
           <span className="absolute -left-0.5 -top-0.5 h-2 w-2 border-l border-t border-accent" />
           <span className="absolute -right-0.5 -top-0.5 h-2 w-2 border-r border-t border-accent" />
@@ -927,7 +933,6 @@ const VisualEdge = React.memo(function VisualEdge({ active }: VisualProps) {
           </div>
         </div>
 
-        {/* Telemetry info */}
         <div className="absolute top-2.5 right-3 text-[7px] font-mono text-white/40 flex flex-col items-end gap-0.5">
           <span>FPS: 60.0</span>
           <span>LATENCY: 12ms</span>
@@ -941,7 +946,6 @@ const VisualEdge = React.memo(function VisualEdge({ active }: VisualProps) {
   );
 });
 
-// 6. Credibility / Proof Visualizer
 const VisualCredibility = React.memo(function VisualCredibility({ active }: VisualProps) {
   if (!active) return null;
 
@@ -973,7 +977,7 @@ const VisualCredibility = React.memo(function VisualCredibility({ active }: Visu
   );
 });
 
-// 7. Lessons Learned Visualizer
+// 7. Principles visualizer sub-component
 const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps) {
   if (!active) return null;
 
@@ -983,45 +987,100 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full h-full flex flex-col items-start justify-center p-10 text-left"
+      className="w-full h-full grid grid-cols-2 gap-4 p-8 text-left font-mono text-[9px]"
     >
-      <div className="space-y-5 font-mono text-[9px] leading-relaxed text-text-secondary max-w-xs">
-        <div>
-          <span className="text-accent font-bold"># PRINCIPLE_01</span>
-          <p className="text-white mt-1 text-xs font-semibold font-display">Prompt design is not software.</p>
-          <span className="text-text-muted leading-relaxed block mt-1">A stable pipeline relies on static schemas, robust API contracts, and deterministic structures.</span>
+      {/* Principle 1: Users Before Scale */}
+      <div className="border border-white/5 rounded-btn p-3 bg-white/[0.005] flex flex-col justify-between">
+        <span className="text-accent font-bold">01 // DEMAND</span>
+        <div className="flex items-center gap-2 text-white font-semibold my-1 text-[10px]">
+          <Activity className="h-3.5 w-3.5 text-accent" />
+          <span>User Value</span>
         </div>
-        <div>
-          <span className="text-accent font-bold"># PRINCIPLE_02</span>
-          <p className="text-white mt-1 text-xs font-semibold font-display">System latency is user latency.</p>
-          <span className="text-text-muted leading-relaxed block mt-1">Offloading frames to CUDA buffers directly minimizes parallel queue blocks.</span>
-        </div>
+        <div className="text-text-muted leading-tight">Focus on active metrics prior to scaling abstractions.</div>
       </div>
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[9px] text-text-secondary uppercase tracking-[0.1em]">
-        Core Engineering Wisdom
+
+      {/* Principle 2: Simple Architectures */}
+      <div className="border border-white/5 rounded-btn p-3 bg-white/[0.005] flex flex-col justify-between">
+        <span className="text-accent font-bold">02 // ARCH</span>
+        <div className="flex items-center gap-2 text-white font-semibold my-1 text-[10px]">
+          <Workflow className="h-3.5 w-3.5 text-accent" />
+          <span>Simple Flows</span>
+        </div>
+        <div className="text-text-muted leading-tight">Reduce distributed dependencies; isolate bounds cleanly.</div>
+      </div>
+
+      {/* Principle 3: Measure First */}
+      <div className="border border-white/5 rounded-btn p-3 bg-white/[0.005] flex flex-col justify-between">
+        <span className="text-accent font-bold">03 // METRIC</span>
+        <div className="flex items-center gap-2 text-white font-semibold my-1 text-[10px]">
+          <Code2 className="h-3.5 w-3.5 text-accent" />
+          <span>Profile First</span>
+        </div>
+        <div className="text-text-muted leading-tight">Validate system bottleneck latencies prior to rewrite loops.</div>
+      </div>
+
+      {/* Principle 4: Ship & Improve */}
+      <div className="border border-white/5 rounded-btn p-3 bg-white/[0.005] flex flex-col justify-between">
+        <span className="text-accent font-bold">04 // LIFECYCLE</span>
+        <div className="flex items-center gap-2 text-white font-semibold my-1 text-[10px]">
+          <GitBranch className="h-3.5 w-3.5 text-accent" />
+          <span>Iterative Release</span>
+        </div>
+        <div className="text-text-muted leading-tight">Release daily loops to gather real user feedback.</div>
       </div>
     </motion.div>
   );
 });
 
-// 8. Final Scene Visualizer
+// 8. Final Scene Visualizer (The Movie Credits-Style Ending)
 const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
   if (!active) return null;
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full h-full flex flex-col items-center justify-center text-center p-6"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.35,
+            delayChildren: 0.5
+          }
+        }
+      }}
+      className="w-full h-full flex flex-col items-center justify-center text-center p-6 bg-black"
     >
-      <h3 className="font-display text-3xl font-semibold tracking-tight text-white mb-2">Let&apos;s Build The Next One.</h3>
-      <p className="font-body text-xs text-text-secondary mb-8 max-w-xs leading-relaxed">
-        Open to full-stack AI roles, internships, and complex system engineering problems.
-      </p>
+      {/* Title fade in (credits typography) */}
+      <motion.h3 
+        variants={{
+          hidden: { opacity: 0, y: 15, filter: "blur(5px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: [0.22, 0.61, 0.36, 1] } }
+        }}
+        className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3"
+      >
+        Let&apos;s Build The Next One.
+      </motion.h3>
+
+      <motion.p 
+        variants={{
+          hidden: { opacity: 0, y: 10 },
+          visible: { opacity: 0.5, y: 0, transition: { duration: 0.8 } }
+        }}
+        className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
+      >
+        Open to engineering roles, collaborations, and challenging software puzzles.
+      </motion.p>
       
-      <div className="flex flex-col gap-2.5 w-48 text-xs font-semibold">
+      {/* Staggered Contact Buttons reveal */}
+      <motion.div 
+        variants={{
+          hidden: { opacity: 0, y: 10 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+        }}
+        className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+      >
         <a 
           href={`mailto:${profile.email}`} 
           className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-all duration-300 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
@@ -1046,7 +1105,7 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
             <Linkedin className="h-3.5 w-3.5" /> LinkedIn
           </a>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 });

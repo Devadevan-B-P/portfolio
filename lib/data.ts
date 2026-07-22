@@ -1,6 +1,7 @@
 export const profile = {
   name: "Devadevan B P",
   role: "Full-Stack AI Software Engineer",
+  headline: "Designing software that thinks before it ships.",
   location: "Thiruvananthapuram, Kerala, India",
   email: "devadevan62338@gmail.com",
   github: "https://github.com/devadevan-b-p",
@@ -30,9 +31,9 @@ export const projects: Project[] = [
       "Designed and developed an autonomous software engineering agent system that builds and deploys complete applications from text prompts.",
       "Implements a multi-agent hierarchy: Product Manager Agent writes PRDs, Architect Agent creates system topology, Coder Agent writes code, and DevOps Agent containerizes and deploys.",
       "Generates complete, production-ready React/FastAPI codebases with database integrations, CI/CD pipelines, and AWS configuration scripts.",
-      "Optimized latency in agent routing and token generation, reducing average project blueprint generation time to under 45 seconds."
+      "DevOps Agent configures Caddy reverse proxy with automatic HTTPS (SSL), packages the system inside Docker containers, and prepares AWS EC2 launch instances connected to MongoDB Atlas."
     ],
-    tech: ["Next.js", "FastAPI", "Python", "LangChain", "Docker", "AWS", "PostgreSQL"],
+    tech: ["Next.js", "FastAPI", "Python", "Docker", "AWS EC2", "Caddy", "MongoDB Atlas"],
     github: "https://github.com/devadevan-b-p",
     featured: true,
   },
@@ -59,7 +60,7 @@ export const projects: Project[] = [
       "Implemented real-time administration dashboard powered by WebSockets to broadcast state transitions instantly to support staff.",
       "Constructed custom MongoDB spatial queries to cluster and map incidents dynamically on an interactive map canvas."
     ],
-    tech: ["React (Vite)", "FastAPI", "MongoDB", "Tailwind CSS", "WebSockets"],
+    tech: ["React (Vite)", "FastAPI", "MongoDB", "Tailwind CSS", "WebSockets", "Caddy"],
     github: "https://github.com/devadevan-b-p",
   },
   {
@@ -101,6 +102,25 @@ export const certifications = [
     title: "Prompt Design in Vertex AI",
     issuer: "Google Cloud Skills Boost",
     date: "2024",
+  },
+];
+
+export const principles = [
+  {
+    title: "Build for users before scale",
+    desc: "Solve real problems today; don't over-engineer for hypothetical traffic.",
+  },
+  {
+    title: "Prefer simple architectures",
+    desc: "Reduce moving parts. Monoliths first; distribute only when bottlenecks force it.",
+  },
+  {
+    title: "Measure before optimizing",
+    desc: "Profile latencies and queries before tweaking code. Data dictates efficiency.",
+  },
+  {
+    title: "Ship, learn, improve",
+    desc: "Get code to production daily. Real feedback is better than modular perfection.",
   },
 ];
 
@@ -182,3 +202,7 @@ export const chapters: Chapter[] = [
     range: [0.97, 1.0],
   },
 ];
+export type Principle = {
+  title: string;
+  desc: string;
+};
