@@ -103,3 +103,82 @@ export const certifications = [
     date: "2024",
   },
 ];
+
+export type ChapterId = 
+  | "problem" 
+  | "blueprint" 
+  | "engine" 
+  | "network" 
+  | "edge" 
+  | "credibility" 
+  | "lessons" 
+  | "final";
+
+export interface Chapter {
+  id: ChapterId;
+  number: string;
+  label: string;
+  title: string;
+  subtitle?: string;
+  range: [number, number];
+}
+
+export const chapters: Chapter[] = [
+  {
+    id: "problem",
+    number: "01",
+    label: "Discovery",
+    title: "The Problem",
+    range: [0, 0.12],
+  },
+  {
+    id: "blueprint",
+    number: "02",
+    label: "Design",
+    title: "The Blueprint",
+    range: [0.12, 0.25],
+  },
+  {
+    id: "engine",
+    number: "03",
+    label: "Flagship Project",
+    title: "Forge AI: The Engine",
+    subtitle: "Autonomous Software Engineer Agent",
+    range: [0.25, 0.58],
+  },
+  {
+    id: "network",
+    number: "04",
+    label: "Systems",
+    title: "The Network",
+    range: [0.58, 0.70],
+  },
+  {
+    id: "edge",
+    number: "05",
+    label: "Edge Processing",
+    title: "The Edge",
+    range: [0.70, 0.82],
+  },
+  {
+    id: "credibility",
+    number: "06",
+    label: "Credibility",
+    title: "Impact & Trust",
+    range: [0.82, 0.90],
+  },
+  {
+    id: "lessons",
+    number: "07",
+    label: "Philosophy",
+    title: "Lessons Learned",
+    range: [0.90, 0.97],
+  },
+  {
+    id: "final",
+    number: "08",
+    label: "Final Scene",
+    title: "Let's Build The Next One",
+    range: [0.97, 1.0],
+  },
+];
