@@ -33,7 +33,7 @@ export const projects: Project[] = [
       "Generates complete, production-ready React/FastAPI codebases with database integrations, CI/CD pipelines, and AWS configuration scripts.",
       "DevOps Agent configures Caddy reverse proxy with automatic HTTPS (SSL), packages the system inside Docker containers, and prepares AWS EC2 launch instances connected to MongoDB Atlas."
     ],
-    tech: ["Next.js", "FastAPI", "Python", "Docker", "AWS EC2", "Caddy", "MongoDB Atlas"],
+    tech: ["React", "FastAPI", "Python", "Docker", "AWS EC2", "Caddy", "MongoDB Atlas"],
     github: "https://github.com/devadevan-b-p",
     featured: true,
   },

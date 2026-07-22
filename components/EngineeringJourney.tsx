@@ -33,6 +33,24 @@ interface VisualProps {
 
 export default function EngineeringJourney() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [githubDays, setGithubDays] = useState<any[]>([]);
+
+  // Pre-fetch GitHub contribution calendar data on initial component mount
+  useEffect(() => {
+    fetch("/api/github")
+      .then((res) => {
+        if (!res.ok) throw new Error("API error");
+        return res.json();
+      })
+      .then((data) => {
+        if (data.days) {
+          setGithubDays(data.days.slice(-49));
+        }
+      })
+      .catch(() => {
+        // Fall back gracefully to mock preview if errors or token missing
+      });
+  }, []);
   
   // Scroll monitoring
   const { scrollYProgress } = useScroll({
@@ -41,7 +59,7 @@ export default function EngineeringJourney() {
   });
 
   // Extract journey state from progress hook
-  const { activeChapter, activeStep } = useJourneyProgress(scrollYProgress);
+  const { activeChapter, activeStep, isDesktop } = useJourneyProgress(scrollYProgress);
 
   // SVG Drawing progress (height mapped)
   const pathLength = useTransform(scrollYProgress, [0, 0.97], [0, 1]);
@@ -51,10 +69,11 @@ export default function EngineeringJourney() {
   const uiOpacity = useTransform(scrollYProgress, [0.96, 0.98], [1, 0]);
 
   return (
-    <div ref={containerRef} className="relative min-h-[850vh] bg-bg-primary">
+    <div ref={containerRef} className={`relative bg-bg-primary ${isDesktop ? "min-h-[850vh]" : "min-h-0"}`}>
       
       {/* DESKTOP VIEW */}
-      <div className="hidden md:flex">
+      {isDesktop ? (
+        <div className="flex">
         
         {/* Left Side: Sticky Visualizer */}
         <div className="sticky top-0 flex h-screen w-[45%] items-center justify-center border-r border-border-subtle p-12 overflow-hidden bg-bg-primary">
@@ -134,8 +153,8 @@ export default function EngineeringJourney() {
                   <VisualEdge key="edge" active={activeChapter === "edge"} />
                 )}
                 {activeChapter === "credibility" && (
-                  <VisualCredibility key="credibility" active={activeChapter === "credibility"} />
-                )}
+                   <VisualCredibility key="credibility" active={activeChapter === "credibility"} daysData={githubDays} />
+                 )}
                 {activeChapter === "lessons" && (
                   <VisualLessons key="lessons" active={activeChapter === "lessons"} />
                 )}
@@ -366,10 +385,9 @@ export default function EngineeringJourney() {
           </section>
         </div>
       </div>
-
-
-      {/* MOBILE VIEW (Simplified vertical timeline) */}
-      <div className="md:hidden px-6 py-20 flex flex-col gap-16 relative">
+      ) : (
+        /* MOBILE VIEW (Simplified vertical timeline) */
+        <div className="px-6 py-20 flex flex-col gap-16 relative">
         <div className="absolute left-10 top-24 bottom-24 w-0.5 bg-white/5" />
 
         <div className="relative pl-12 space-y-20">
@@ -456,6 +474,7 @@ export default function EngineeringJourney() {
           </MobileSection>
         </div>
       </div>
+      )}
     </div>
   );
 }
@@ -612,7 +631,7 @@ const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualPr
         <div className="border border-white/5 rounded-btn px-2 py-4 bg-white/[0.005]">
           <span className="text-white font-semibold">CLIENT</span>
           <div className="mt-2 h-[1px] bg-white/5 w-full" />
-          <div className="mt-2 text-[8px] text-text-muted">Next.js SPA</div>
+          <div className="mt-2 text-[8px] text-text-muted">React SPA</div>
         </div>
         <div className="border border-accent/10 rounded-btn px-2 py-4 bg-accent/[0.01] flex flex-col justify-between">
           <span className="text-accent font-semibold">GATEWAY</span>
@@ -746,7 +765,7 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[Next.js Client] <span className="text-white">←(HTTP/WS)→</span> [Caddy Proxy]</div>
+                <div>[React Client] <span className="text-white">←(HTTP/WS)→</span> [Caddy Proxy]</div>
                 <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
                 <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
@@ -946,8 +965,14 @@ const VisualEdge = React.memo(function VisualEdge({ active }: VisualProps) {
   );
 });
 
-const VisualCredibility = React.memo(function VisualCredibility({ active }: VisualProps) {
+interface VisualCredibilityProps extends VisualProps {
+  daysData: any[];
+}
+
+const VisualCredibility = React.memo(function VisualCredibility({ active, daysData }: VisualCredibilityProps) {
   if (!active) return null;
+
+  const renderMock = daysData.length === 0;
 
   return (
     <motion.div
@@ -957,21 +982,43 @@ const VisualCredibility = React.memo(function VisualCredibility({ active }: Visu
       transition={{ duration: 0.4 }}
       className="w-full h-full flex flex-col items-center justify-center p-6"
     >
-      <div className="grid grid-cols-7 gap-1.5 w-60 opacity-40" aria-label="Commit tracking visual chart">
-        {Array.from({ length: 49 }).map((_, i) => {
-          const activeNode = i % 3 === 0 || i % 7 === 0;
-          return (
-            <div 
-              key={i} 
-              className={`aspect-square w-full rounded-sm border-[0.5px] border-white/5 ${
-                activeNode ? "bg-accent/30" : "bg-white/[0.02]"
-              }`} 
-            />
-          );
-        })}
+      <div className="grid grid-cols-7 gap-1.5 w-60 opacity-50" aria-label="Commit tracking visual chart">
+        {renderMock
+          ? Array.from({ length: 49 }).map((_, i) => {
+              const activeNode = i % 3 === 0 || i % 7 === 0;
+              return (
+                <div 
+                  key={i} 
+                  className={`aspect-square w-full rounded-sm border-[0.5px] border-white/5 ${
+                    activeNode ? "bg-accent/30" : "bg-white/[0.02]"
+                  }`} 
+                />
+              );
+            })
+          : daysData.map((day, i) => {
+              const count = day.contributionCount;
+              let styleClass = "bg-white/[0.02] border-white/5";
+              if (count > 0 && count <= 2) {
+                styleClass = "bg-accent/15 border-accent/20";
+              } else if (count > 2 && count <= 4) {
+                styleClass = "bg-accent/35 border-accent/30";
+              } else if (count > 4 && count <= 7) {
+                styleClass = "bg-accent/60 border-accent/50 shadow-[0_0_8px_rgba(79,140,255,0.15)]";
+              } else if (count > 7) {
+                styleClass = "bg-accent/80 border-accent/70 shadow-[0_0_10px_rgba(79,140,255,0.3)]";
+              }
+              return (
+                <div 
+                  key={day.date || i} 
+                  title={`${day.date}: ${count} commits`}
+                  className={`aspect-square w-full rounded-sm border-[0.5px] transition-all duration-500 ${styleClass}`} 
+                />
+              );
+            })
+        }
       </div>
       <div className="absolute bottom-6 font-mono text-[9px] text-text-secondary uppercase tracking-[0.1em]">
-        Verified GitHub Contributions
+        {renderMock ? "Verified GitHub Contributions" : "Real GitHub Contributions Active"}
       </div>
     </motion.div>
   );
@@ -1050,7 +1097,7 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
           }
         }
       }}
-      className="w-full h-full flex flex-col items-center justify-center text-center p-6 bg-black"
+      className="w-full h-full flex flex-col items-center justify-center text-center p-6"
     >
       {/* Title fade in (credits typography) */}
       <motion.h3 

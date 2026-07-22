@@ -9,7 +9,7 @@ import SpotlightCard from "./SpotlightCard";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
-export default function Hero() {
+export default function Hero({ startAnimation = true }: { startAnimation?: boolean }) {
   const { scrollY } = useScroll();
   
   // Dissolve effect on scroll: fade out and slide up slightly
@@ -44,7 +44,7 @@ export default function Hero() {
       >
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
           transition={{ duration: 0.8, ease, delay: 0.1 }}
           className="mb-8 flex items-center gap-3"
         >
@@ -58,12 +58,12 @@ export default function Hero() {
         </motion.div>
 
         {/* Large Cinematic Headline with blur-to-sharp fade in */}
-        <h1 className="font-display font-bold leading-[1.0] tracking-tight text-white mb-6 select-none text-[48px] md:text-[72px] lg:text-[90px] max-w-4xl text-center">
+        <h1 className="font-display font-bold leading-[1.0] tracking-tight text-white mb-6 select-none text-[36px] sm:text-[48px] md:text-[72px] lg:text-[90px] max-w-4xl text-center">
           {headingWords.map((word, i) => (
             <motion.span
               key={`${word}-${i}`}
               initial={{ filter: "blur(12px)", opacity: 0, y: 30 }}
-              animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+              animate={startAnimation ? { filter: "blur(0px)", opacity: 1, y: 0 } : { filter: "blur(12px)", opacity: 0, y: 30 }}
               transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.12 }}
               className="inline-block mx-2 text-gradient"
             >
@@ -74,7 +74,7 @@ export default function Hero() {
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.9, ease, delay: 1.0 }}
           className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-text-secondary md:text-base text-center"
         >
@@ -84,7 +84,7 @@ export default function Hero() {
         {/* Action button with cursor spotlight */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.9, ease, delay: 1.2 }}
           className="mt-12 flex flex-wrap justify-center items-center gap-4"
         >
@@ -106,7 +106,7 @@ export default function Hero() {
       {/* Decorative corners HUD */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
+        animate={startAnimation ? { opacity: 0.4 } : { opacity: 0 }}
         transition={{ duration: 1, ease, delay: 1.4 }}
         className="pointer-events-none absolute bottom-12 right-6 hidden md:block md:right-12"
       >
