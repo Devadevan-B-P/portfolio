@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -225,7 +225,7 @@ Best regards,
               Software engineering is undergoing a tectonic shift. Building today requires mapping complex requirements into microservices, deploying across cloud infrastructure, and maintaining real-time states, often creating bottlenecks for small teams.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
-              I focus on identifying core architectural flaws—disconnects between user intent and folder implementation—to design automated workflows that translate abstract ideas into robust running products.
+              I focus on identifying core architectural flawsâ€”disconnects between user intent and folder implementationâ€”to design automated workflows that translate abstract ideas into robust running products.
             </p>
           </section>
 
@@ -236,7 +236,7 @@ Best regards,
               The Blueprint
             </h2>
             <p className="font-body text-base lg:text-lg leading-relaxed text-text-secondary max-w-xl mb-6">
-              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planning—defining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
+              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planningâ€”defining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
               Through designing architectures for high availability, I bridge frontend applications to server arrays and container deployments, ensuring every dependency tree is clean and scalable.
@@ -416,9 +416,10 @@ Best regards,
             </div>
           </section>
 
-          {/* Stage 8: Final Scene with movie credits spacing */}
-          <section id="contact" className="min-h-[160vh] flex flex-col justify-center py-[20vh]">
-            {/* Empty right column: let visual visualizer capture full viewport center and fade in */}
+          {/* Stage 8: Final Scene â€” particle swarm fills the right column */}
+          <section id="contact" className="relative min-h-[160vh] py-[20vh]">
+            {/* Sticky canvas that fills viewport height while scrolling */}
+            <ParticleSwarm active={activeChapter === "final"} />
           </section>
         </div>
       </div>
@@ -828,9 +829,9 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               <div className="space-y-2 text-[10px] leading-relaxed text-text-secondary">
                 <div><span className="text-white font-bold">Project Target:</span> Autonomous developer server</div>
                 <div><span className="text-white font-bold">Scope Constraints:</span></div>
-                <div className="pl-3">• Stateless JWT OAuth credentials mapping</div>
-                <div className="pl-3">• Task schema: UUID Primary Key, status enums</div>
-                <div className="pl-3">• Real-time WebSockets state updates feed</div>
+                <div className="pl-3">â€¢ Stateless JWT OAuth credentials mapping</div>
+                <div className="pl-3">â€¢ Task schema: UUID Primary Key, status enums</div>
+                <div className="pl-3">â€¢ Real-time WebSockets state updates feed</div>
               </div>
             </motion.div>
           )}
@@ -850,7 +851,7 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[React Client] <span className="text-white">←(HTTP/WS)→</span> [Caddy Proxy]</div>
+                <div>[React Client] <span className="text-white">â†(HTTP/WS)â†’</span> [Caddy Proxy]</div>
                 <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
                 <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
@@ -902,13 +903,13 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="text-[9px] leading-relaxed font-mono">
-                <div className="text-accent font-bold">📂 src/</div>
-                <div className="pl-3 text-accent font-bold">📂 client/</div>
-                <div className="pl-6 text-text-secondary">📄 page.tsx</div>
-                <div className="pl-3 text-accent font-bold">📂 api/</div>
-                <div className="pl-6 text-text-secondary">📄 main.py</div>
-                <div className="pl-6 text-text-secondary">📄 models.py</div>
-                <div className="text-text-muted">📄 docker-compose.yml</div>
+                <div className="text-accent font-bold">ðŸ“‚ src/</div>
+                <div className="pl-3 text-accent font-bold">ðŸ“‚ client/</div>
+                <div className="pl-6 text-text-secondary">ðŸ“„ page.tsx</div>
+                <div className="pl-3 text-accent font-bold">ðŸ“‚ api/</div>
+                <div className="pl-6 text-text-secondary">ðŸ“„ main.py</div>
+                <div className="pl-6 text-text-secondary">ðŸ“„ models.py</div>
+                <div className="text-text-muted">ðŸ“„ docker-compose.yml</div>
               </div>
             </motion.div>
           )}
@@ -1164,28 +1165,25 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
   );
 });
 
-// 8. Final Scene Visualizer (The Movie Credits-Style Ending)
-const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
+// Standalone sticky particle swarm canvas for the right column
+function ParticleSwarm({ active }: { active: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!active || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    // CONFIG
     const COUNT = 20000;
     const SPEED_MULT = 1;
-    const AUTO_SPIN = false;
 
-    // SETUP
-    const canvas = canvasRef.current;
-    const width = canvas.clientWidth || 400;
-    const height = canvas.clientHeight || 400;
+    const width = canvas.clientWidth || 500;
+    const height = canvas.clientHeight || 600;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.015);
+    scene.fog = new THREE.FogExp2(0x000000, 0.01);
 
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000);
-    camera.position.set(0, 0, 90);
+    camera.position.set(0, 0, 100);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -1198,52 +1196,35 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
 
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
-    controls.autoRotate = AUTO_SPIN;
-    controls.autoRotateSpeed = 2.0;
+    controls.autoRotate = false;
     controls.minDistance = 30;
     controls.maxDistance = 250;
 
-    // POST PROCESSING
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(width, height),
-      1.5,
-      0.4,
-      0.85
-    );
-    bloomPass.strength = 1.8;
-    bloomPass.radius = 0.4;
-    bloomPass.threshold = 0;
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(width, height), 1.8, 0.4, 0);
     composer.addPass(bloomPass);
 
-    // SWARM OBJECTS
     const dummy = new THREE.Object3D();
     const color = new THREE.Color();
     const target = new THREE.Vector3();
 
-    // INSTANCED MESH
     const geometry = new THREE.TetrahedronGeometry(0.25);
     const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
     const instancedMesh = new THREE.InstancedMesh(geometry, material, COUNT);
     instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     scene.add(instancedMesh);
 
-    // DATA ARRAYS
     const positions: THREE.Vector3[] = [];
     for (let i = 0; i < COUNT; i++) {
-      positions.push(
-        new THREE.Vector3(
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100
-        )
-      );
+      positions.push(new THREE.Vector3(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+      ));
       instancedMesh.setColorAt(i, color.setHex(0x00ff88));
     }
 
-    // Pre-calculate icosahedron vertices for flavivirus structure
     const PHI = (1 + Math.sqrt(5)) / 2;
     const icoVerts = [
       [-1, PHI, 0], [1, PHI, 0], [-1, -PHI, 0], [1, -PHI, 0],
@@ -1251,131 +1232,68 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
       [PHI, 0, -1], [PHI, 0, 1], [-PHI, 0, -1], [-PHI, 0, 1]
     ];
     for (let v = 0; v < 12; v++) {
-      const m = Math.sqrt(
-        icoVerts[v][0] * icoVerts[v][0] +
-        icoVerts[v][1] * icoVerts[v][1] +
-        icoVerts[v][2] * icoVerts[v][2]
-      );
-      icoVerts[v][0] /= m;
-      icoVerts[v][1] /= m;
-      icoVerts[v][2] /= m;
+      const m = Math.sqrt(icoVerts[v][0] ** 2 + icoVerts[v][1] ** 2 + icoVerts[v][2] ** 2);
+      icoVerts[v][0] /= m; icoVerts[v][1] /= m; icoVerts[v][2] /= m;
     }
 
-    // CONTROL PARAMETERS
     const PARAMS = { scale: 25, rotate: 0.5, pulse: 0.2 };
-
     const clock = new THREE.Clock();
-    let animationFrameId: number;
+    let rafId: number;
 
     const tick = () => {
-      animationFrameId = requestAnimationFrame(tick);
-
+      rafId = requestAnimationFrame(tick);
       const time = clock.getElapsedTime() * SPEED_MULT;
-
-      // Update OrbitControls
       controls.update();
 
-      // Swarm Update loop
       for (let i = 0; i < COUNT; i++) {
         const S = PARAMS.scale;
-        const spd = PARAMS.rotate;
-        const pulse = PARAMS.pulse;
-
-        const t = time * spd;
+        const t = time * PARAMS.rotate;
         const ratio = i / COUNT;
-        const phi_angle = Math.acos(1 - 2 * (i + 0.5) / COUNT);
+        const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
         const theta = Math.PI * (3 - Math.sqrt(5)) * i;
 
-        let cx = Math.sin(phi_angle) * Math.cos(theta);
-        let cy = Math.sin(phi_angle) * Math.sin(theta);
-        let cz = Math.cos(phi_angle);
-
-        let rad = S;
-        let hue = 0;
-        let sat = 0;
-        let light = 0;
+        let cx = Math.sin(phi) * Math.cos(theta);
+        let cy = Math.sin(phi) * Math.sin(theta);
+        let cz = Math.cos(phi);
+        let rad = S, hue = 0, sat = 0, light = 0;
 
         if (ratio < 0.1) {
-          // ssRNA Genome - Bluish violet
-          rad = S * 0.1;
-          cx = Math.sin(phi_angle) * Math.cos(theta);
-          cy = Math.sin(phi_angle) * Math.sin(theta);
-          cz = Math.cos(phi_angle);
-          hue = 0.63;
-          sat = 0.8;
-          light = 0.6;
+          rad = S * 0.1; hue = 0.63; sat = 0.8; light = 0.6;
         } else if (ratio < 0.3) {
-          // Nucleocapsid Core - Icosahedral
           const vIdx = Math.floor((ratio - 0.1) / 0.2 * 12) % 12;
-          const vx = icoVerts[vIdx][0];
-          const vy = icoVerts[vIdx][1];
-          const vz = icoVerts[vIdx][2];
-
           const blend = 0.35;
-          cx = cx * (1 - blend) + vx * blend;
-          cy = cy * (1 - blend) + vy * blend;
-          cz = cz * (1 - blend) + vz * blend;
-
-          const dist = Math.sqrt(cx * cx + cy * cy + cz * cz);
-          const safeDist = Math.max(dist, 0.001);
-          cx /= safeDist;
-          cy /= safeDist;
-          cz /= safeDist;
-
+          cx = cx * (1 - blend) + icoVerts[vIdx][0] * blend;
+          cy = cy * (1 - blend) + icoVerts[vIdx][1] * blend;
+          cz = cz * (1 - blend) + icoVerts[vIdx][2] * blend;
+          const d = Math.max(Math.sqrt(cx*cx+cy*cy+cz*cz), 0.001);
+          cx /= d; cy /= d; cz /= d;
           rad = S * 0.25 * (1 + Math.sin(i * 0.3 + t * 2.5) * 0.18);
           hue = 0.09 + Math.sin(i * 0.4 + t) * 0.03;
           sat = 0.85 + Math.cos(i * 0.3 + t) * 0.15;
           light = 0.4 + Math.sin(i * 0.5 + t * 1.5) * 0.15;
         } else if (ratio < 0.38) {
-          // Lipid Envelope - Pinkish red
           rad = S * 0.42 * (1 + Math.sin(i * 0.15 + t * 1.2) * 0.06);
-          hue = 0.97;
-          sat = 0.55;
-          light = 0.65 + Math.sin(i * 0.2 + t * 0.8) * 0.12;
+          hue = 0.97; sat = 0.55; light = 0.65 + Math.sin(i * 0.2 + t * 0.8) * 0.12;
         } else if (ratio < 0.65) {
-          // E Protein Dimers - Red spikes
-          rad = S * 0.58 * (1 + Math.sin(i * 0.5 + t * 3) * 0.3);
-          const eWave = Math.sin(i * 2.5 + t * 4) * 0.35;
-          rad += eWave * (S * 0.12);
+          rad = S * 0.58 * (1 + Math.sin(i * 0.5 + t * 3) * 0.3) + Math.sin(i * 2.5 + t * 4) * 0.35 * S * 0.12;
           hue = 0.03 + Math.sin(i * 0.6 + t * 2) * 0.04;
           sat = 0.95 + Math.cos(i * 0.4 + t) * 0.05;
           light = 0.5 + Math.sin(i * 0.5 + t * 1.5) * 0.12;
         } else if (ratio < 0.85) {
-          // M Protein - Orange surface proteins
-          rad = S * 0.68 * (1 + Math.sin(i * 0.4 + t * 3.2) * 0.25);
-          const mWave = Math.cos(i * 3 + t * 5) * 0.3;
-          rad += mWave * (S * 0.1);
+          rad = S * 0.68 * (1 + Math.sin(i * 0.4 + t * 3.2) * 0.25) + Math.cos(i * 3 + t * 5) * 0.3 * S * 0.1;
           hue = 0.1 + Math.cos(i * 0.5 + t * 2.5) * 0.04;
-          sat = 0.9;
-          light = 0.55 + Math.sin(i * 0.4 + t * 1.8) * 0.15;
+          sat = 0.9; light = 0.55 + Math.sin(i * 0.4 + t * 1.8) * 0.15;
         } else {
-          // Glycoprotein spikes - Golden
-          rad = S * 0.78 * (1 + Math.sin(i * 0.35 + t * 3.8) * 0.45);
-          const outerSpike = Math.cos(i * 3.5 + t * 5.5) * 0.3;
-          rad += outerSpike * (S * 0.18);
+          rad = S * 0.78 * (1 + Math.sin(i * 0.35 + t * 3.8) * 0.45) + Math.cos(i * 3.5 + t * 5.5) * 0.3 * S * 0.18;
           hue = 0.13 + Math.cos(i * 0.5 + t * 2.8) * 0.04;
-          sat = 0.85;
-          light = 0.6 + Math.sin(i * 0.4 + t * 2) * 0.18;
+          sat = 0.85; light = 0.6 + Math.sin(i * 0.4 + t * 2) * 0.18;
         }
 
-        const breathe = 1 + Math.sin(t * 2) * pulse * 0.06;
-        rad *= breathe;
-
-        const cosA = Math.cos(time * 0.08);
-        const sinA = Math.sin(time * 0.08);
-        const rx = cx * cosA - cz * sinA;
-        const rz = cx * sinA + cz * cosA;
-        const ry = cy;
-
-        const finalX = rx * rad;
-        const finalY = ry * rad;
-        const finalZ = rz * rad;
-
-        target.set(finalX, finalY, finalZ);
+        rad *= 1 + Math.sin(t * 2) * PARAMS.pulse * 0.06;
+        const cosA = Math.cos(t * 0.35), sinA = Math.sin(t * 0.35);
+        target.set((cx * cosA - cz * sinA) * rad, cy * rad, (cx * sinA + cz * cosA) * rad);
         color.setHSL(hue, sat, light);
-
-        // LERP & UPDATE
-        positions[i].lerp(target, 0.08);
+        positions[i].lerp(target, 0.1);
         dummy.position.copy(positions[i]);
         dummy.updateMatrix();
         instancedMesh.setMatrixAt(i, dummy.matrix);
@@ -1383,134 +1301,101 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
       }
 
       instancedMesh.instanceMatrix.needsUpdate = true;
-      if (instancedMesh.instanceColor) {
-        instancedMesh.instanceColor.needsUpdate = true;
-      }
-
+      if (instancedMesh.instanceColor) instancedMesh.instanceColor.needsUpdate = true;
       composer.render();
     };
 
     tick();
 
-    // Resize Handler
-    const handleResize = () => {
-      if (!canvas) return;
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
+    const onResize = () => {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h, false);
       composer.setSize(w, h);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", onResize);
 
-    // CLEANUP
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", handleResize);
-      geometry.dispose();
-      material.dispose();
-      instancedMesh.dispose();
-      renderer.dispose();
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      geometry.dispose(); material.dispose();
+      instancedMesh.dispose(); renderer.dispose();
     };
-  }, [active]);
+  }, []);
 
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: active ? 1 : 0 }}
+      transition={{ duration: 1.2, ease: [0.22, 0.61, 0.36, 1] }}
+      className="sticky top-0 h-screen w-full"
+    >
+      <canvas ref={canvasRef} className="w-full h-full block" />
+    </motion.div>
+  );
+}
+
+// 8. Final Scene Visualizer â€” clean contact card
+const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
   if (!active) return null;
 
   const itemVariants = {
     hidden: { opacity: 0, y: 12 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } 
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } }
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-      {/* 3D Particle Swarm Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-0 opacity-80" />
-      
-      {/* Visual overlay content (the contact card) */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.15,
-              delayChildren: 0.2
-            }
-          }
-        }}
-        className="relative z-10 w-full max-w-sm p-8 flex flex-col items-center justify-center text-center glass-strong rounded-[24px] border border-white/5 shadow-2xl backdrop-blur-md"
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
+      }}
+      className="w-full h-full flex flex-col items-center justify-center text-center p-6"
+    >
+      <motion.h3
+        variants={itemVariants}
+        className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3"
       >
-        {/* Title fade in (credits typography) */}
-        <motion.h3 
-          variants={itemVariants}
-          className="font-display text-3xl font-bold tracking-tight text-white mb-2"
-        >
-          Let&apos;s Build The Next One.
-        </motion.h3>
+        Let&apos;s Build The Next One.
+      </motion.h3>
 
-        <motion.p 
-          variants={{
-            hidden: { opacity: 0, y: 12 },
-            visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } }
-          }}
-          className="font-body text-[11px] text-text-secondary mb-8 max-w-xs leading-relaxed"
+      <motion.p
+        variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } } }}
+        className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
+      >
+        Open to engineering roles, collaborations, and challenging software puzzles.
+      </motion.p>
+
+      <motion.div
+        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
+        className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+      >
+        <motion.a
+          variants={itemVariants}
+          href="#"
+          onClick={(e) => { e.preventDefault(); if (onEmailClick) onEmailClick(null as any); }}
+          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer"
         >
-          Open to engineering roles, collaborations, and challenging software puzzles.
-        </motion.p>
-        
-        {/* Staggered Contact Buttons reveal */}
-        <motion.div 
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { 
-              opacity: 1, 
-              transition: { 
-                staggerChildren: 0.1,
-                delayChildren: 0.1
-              } 
-            }
-          }}
-          className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
-        >
-          <motion.a 
-            variants={itemVariants}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onEmailClick) onEmailClick(null as any);
-            }}
-            className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent cursor-pointer"
+          <Mail className="h-4 w-4" /> Email Me
+        </motion.a>
+
+        <motion.div className="flex gap-2" variants={itemVariants}>
+          <a href={profile.github} target="_blank" rel="noopener noreferrer"
+            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
           >
-            <Mail className="h-4 w-4" /> Email Me
-          </motion.a>
-          
-          <motion.div className="flex gap-2" variants={itemVariants}>
-            <a 
-              href={profile.github} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              <Github className="h-3.5 w-3.5" /> GitHub
-            </a>
-            <a 
-              href={profile.linkedin} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-            </a>
-          </motion.div>
+            <Github className="h-3.5 w-3.5" /> GitHub
+          </a>
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer"
+            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
+          >
+            <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+          </a>
         </motion.div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 });
+
