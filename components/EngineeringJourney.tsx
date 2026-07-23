@@ -29,11 +29,21 @@ import SpotlightCard from "./SpotlightCard";
 
 interface VisualProps {
   active: boolean;
+  onEmailClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function EngineeringJourney() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [githubDays, setGithubDays] = useState<any[]>([]);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(profile.email);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
+    }
+  };
 
   // Pre-fetch GitHub contribution calendar data on initial component mount
   useEffect(() => {
@@ -159,7 +169,7 @@ export default function EngineeringJourney() {
                   <VisualLessons key="lessons" active={activeChapter === "lessons"} />
                 )}
                 {activeChapter === "final" && (
-                  <VisualFinal key="final" active={activeChapter === "final"} />
+                  <VisualFinal key="final" active={activeChapter === "final"} onEmailClick={handleEmailClick} />
                 )}
               </AnimatePresence>
             </div>
@@ -486,7 +496,11 @@ export default function EngineeringJourney() {
                 <h3 className="font-display text-2xl font-semibold tracking-tight text-white mb-2">Let&apos;s Build The Next One.</h3>
                 <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
                 <div className="flex gap-4">
-                  <a href={`mailto:${profile.email}`} className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
+                  <a 
+                    href={`mailto:${profile.email}`} 
+                    onClick={handleEmailClick}
+                    className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5"
+                  >
                     <Mail className="h-3.5 w-3.5" /> Email
                   </a>
                   <a href={profile.github} target="_blank" rel="noopener noreferrer" className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
@@ -501,6 +515,21 @@ export default function EngineeringJourney() {
           </div>
         </div>
       )}
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 glass-strong px-5 py-3 rounded-full text-xs font-semibold text-white shadow-glow border border-accent/20 flex items-center gap-2"
+          >
+            <CheckCircle2 className="h-4 w-4 text-accent" />
+            Email copied to clipboard!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1106,7 +1135,7 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
 });
 
 // 8. Final Scene Visualizer (The Movie Credits-Style Ending)
-const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
+const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
   if (!active) return null;
 
   const itemVariants = {
@@ -1169,6 +1198,7 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
         <motion.a 
           variants={itemVariants}
           href={`mailto:${profile.email}`} 
+          onClick={onEmailClick}
           className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
         >
           <Mail className="h-4 w-4" /> Email Me
