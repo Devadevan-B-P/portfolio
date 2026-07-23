@@ -225,7 +225,7 @@ Best regards,
               Software engineering is undergoing a tectonic shift. Building today requires mapping complex requirements into microservices, deploying across cloud infrastructure, and maintaining real-time states, often creating bottlenecks for small teams.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
-              I focus on identifying core architectural flawsâ€”disconnects between user intent and folder implementationâ€”to design automated workflows that translate abstract ideas into robust running products.
+              I focus on identifying core architectural flawsÃ¢â‚¬â€disconnects between user intent and folder implementationÃ¢â‚¬â€to design automated workflows that translate abstract ideas into robust running products.
             </p>
           </section>
 
@@ -236,7 +236,7 @@ Best regards,
               The Blueprint
             </h2>
             <p className="font-body text-base lg:text-lg leading-relaxed text-text-secondary max-w-xl mb-6">
-              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planningâ€”defining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
+              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planningÃ¢â‚¬â€defining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
               Through designing architectures for high availability, I bridge frontend applications to server arrays and container deployments, ensuring every dependency tree is clean and scalable.
@@ -416,7 +416,7 @@ Best regards,
             </div>
           </section>
 
-          {/* Stage 8: Final Scene â€” particle swarm fills the right column */}
+          {/* Stage 8: Final Scene Ã¢â‚¬â€ particle swarm fills the right column */}
           <section id="contact" className="relative min-h-[160vh] py-[20vh]">
             {/* Sticky canvas that fills viewport height while scrolling */}
             <ParticleSwarm active={activeChapter === "final"} />
@@ -829,9 +829,9 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               <div className="space-y-2 text-[10px] leading-relaxed text-text-secondary">
                 <div><span className="text-white font-bold">Project Target:</span> Autonomous developer server</div>
                 <div><span className="text-white font-bold">Scope Constraints:</span></div>
-                <div className="pl-3">â€¢ Stateless JWT OAuth credentials mapping</div>
-                <div className="pl-3">â€¢ Task schema: UUID Primary Key, status enums</div>
-                <div className="pl-3">â€¢ Real-time WebSockets state updates feed</div>
+                <div className="pl-3">Ã¢â‚¬Â¢ Stateless JWT OAuth credentials mapping</div>
+                <div className="pl-3">Ã¢â‚¬Â¢ Task schema: UUID Primary Key, status enums</div>
+                <div className="pl-3">Ã¢â‚¬Â¢ Real-time WebSockets state updates feed</div>
               </div>
             </motion.div>
           )}
@@ -851,7 +851,7 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[React Client] <span className="text-white">â†(HTTP/WS)â†’</span> [Caddy Proxy]</div>
+                <div>[React Client] <span className="text-white">Ã¢â€ Â(HTTP/WS)Ã¢â€ â€™</span> [Caddy Proxy]</div>
                 <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
                 <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
@@ -903,13 +903,13 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="text-[9px] leading-relaxed font-mono">
-                <div className="text-accent font-bold">ðŸ“‚ src/</div>
-                <div className="pl-3 text-accent font-bold">ðŸ“‚ client/</div>
-                <div className="pl-6 text-text-secondary">ðŸ“„ page.tsx</div>
-                <div className="pl-3 text-accent font-bold">ðŸ“‚ api/</div>
-                <div className="pl-6 text-text-secondary">ðŸ“„ main.py</div>
-                <div className="pl-6 text-text-secondary">ðŸ“„ models.py</div>
-                <div className="text-text-muted">ðŸ“„ docker-compose.yml</div>
+                <div className="text-accent font-bold">Ã°Å¸â€œâ€š src/</div>
+                <div className="pl-3 text-accent font-bold">Ã°Å¸â€œâ€š client/</div>
+                <div className="pl-6 text-text-secondary">Ã°Å¸â€œâ€ž page.tsx</div>
+                <div className="pl-3 text-accent font-bold">Ã°Å¸â€œâ€š api/</div>
+                <div className="pl-6 text-text-secondary">Ã°Å¸â€œâ€ž main.py</div>
+                <div className="pl-6 text-text-secondary">Ã°Å¸â€œâ€ž models.py</div>
+                <div className="text-text-muted">Ã°Å¸â€œâ€ž docker-compose.yml</div>
               </div>
             </motion.div>
           )}
@@ -1165,7 +1165,7 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
   );
 });
 
-// Standalone sticky particle swarm canvas for the right column
+// Standalone particle swarm â€” fixed size, no interaction, self-rotating
 function ParticleSwarm({ active }: { active: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -1173,16 +1173,13 @@ function ParticleSwarm({ active }: { active: boolean }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const COUNT = 20000;
-    const SPEED_MULT = 1;
-
-    const width = canvas.clientWidth || 500;
-    const height = canvas.clientHeight || 600;
+    // Fixed render size â€” always 480x480 regardless of container
+    const SIZE = 480;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000000, 0.01);
 
-    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000);
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
     camera.position.set(0, 0, 100);
 
     const renderer = new THREE.WebGLRenderer({
@@ -1191,20 +1188,15 @@ function ParticleSwarm({ active }: { active: boolean }) {
       powerPreference: "high-performance",
       alpha: true,
     });
-    renderer.setSize(width, height, false);
+    renderer.setSize(SIZE, SIZE, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    const controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
-    controls.autoRotate = false;
-    controls.minDistance = 30;
-    controls.maxDistance = 250;
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(width, height), 1.8, 0.4, 0);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(SIZE, SIZE), 2.0, 0.5, 0);
     composer.addPass(bloomPass);
 
+    const COUNT = 20000;
     const dummy = new THREE.Object3D();
     const color = new THREE.Color();
     const target = new THREE.Vector3();
@@ -1236,18 +1228,16 @@ function ParticleSwarm({ active }: { active: boolean }) {
       icoVerts[v][0] /= m; icoVerts[v][1] /= m; icoVerts[v][2] /= m;
     }
 
-    const PARAMS = { scale: 25, rotate: 0.5, pulse: 0.2 };
+    const S = 25, ROTATE = 0.5, PULSE = 0.2;
     const clock = new THREE.Clock();
     let rafId: number;
 
     const tick = () => {
       rafId = requestAnimationFrame(tick);
-      const time = clock.getElapsedTime() * SPEED_MULT;
-      controls.update();
+      const time = clock.getElapsedTime();
+      const t = time * ROTATE;
 
       for (let i = 0; i < COUNT; i++) {
-        const S = PARAMS.scale;
-        const t = time * PARAMS.rotate;
         const ratio = i / COUNT;
         const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
         const theta = Math.PI * (3 - Math.sqrt(5)) * i;
@@ -1265,7 +1255,7 @@ function ParticleSwarm({ active }: { active: boolean }) {
           cx = cx * (1 - blend) + icoVerts[vIdx][0] * blend;
           cy = cy * (1 - blend) + icoVerts[vIdx][1] * blend;
           cz = cz * (1 - blend) + icoVerts[vIdx][2] * blend;
-          const d = Math.max(Math.sqrt(cx*cx+cy*cy+cz*cz), 0.001);
+          const d = Math.max(Math.sqrt(cx * cx + cy * cy + cz * cz), 0.001);
           cx /= d; cy /= d; cz /= d;
           rad = S * 0.25 * (1 + Math.sin(i * 0.3 + t * 2.5) * 0.18);
           hue = 0.09 + Math.sin(i * 0.4 + t) * 0.03;
@@ -1289,7 +1279,8 @@ function ParticleSwarm({ active }: { active: boolean }) {
           sat = 0.85; light = 0.6 + Math.sin(i * 0.4 + t * 2) * 0.18;
         }
 
-        rad *= 1 + Math.sin(t * 2) * PARAMS.pulse * 0.06;
+        rad *= 1 + Math.sin(t * 2) * PULSE * 0.06;
+        // Gentle auto-rotation â€” no user control
         const cosA = Math.cos(t * 0.35), sinA = Math.sin(t * 0.35);
         target.set((cx * cosA - cz * sinA) * rad, cy * rad, (cx * sinA + cz * cosA) * rad);
         color.setHSL(hue, sat, light);
@@ -1307,36 +1298,35 @@ function ParticleSwarm({ active }: { active: boolean }) {
 
     tick();
 
-    const onResize = () => {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h, false);
-      composer.setSize(w, h);
-    };
-    window.addEventListener("resize", onResize);
-
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", onResize);
-      geometry.dispose(); material.dispose();
-      instancedMesh.dispose(); renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+      instancedMesh.dispose();
+      renderer.dispose();
     };
   }, []);
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: active ? 1 : 0 }}
-      transition={{ duration: 1.2, ease: [0.22, 0.61, 0.36, 1] }}
-      className="sticky top-0 h-screen w-full"
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 0.92 }}
+      transition={{ duration: 1.4, ease: [0.22, 0.61, 0.36, 1] }}
+      className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none"
     >
-      <canvas ref={canvasRef} className="w-full h-full block" />
+      {/* Fixed 480Ã—480 canvas â€” does not react to scroll or mouse */}
+      <canvas
+        ref={canvasRef}
+        width={480}
+        height={480}
+        style={{ width: 480, height: 480, display: "block" }}
+      />
     </motion.div>
   );
 }
 
-// 8. Final Scene Visualizer â€” clean contact card
+
+// 8. Final Scene Visualizer -- clean contact card
 const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
   if (!active) return null;
 
@@ -1398,4 +1388,3 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
     </motion.div>
   );
 });
-
