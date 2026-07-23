@@ -497,7 +497,7 @@ export default function EngineeringJourney() {
                 <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
                 <div className="flex gap-4">
                   <a 
-                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+                    href={`https://mail.google.com/mail/?extsrc=mailto&url=mailto:${profile.email}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleEmailClick}
@@ -1199,7 +1199,7 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
       >
         <motion.a 
           variants={itemVariants}
-          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+          href={`https://mail.google.com/mail/?extsrc=mailto&url=mailto:${profile.email}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={onEmailClick}
