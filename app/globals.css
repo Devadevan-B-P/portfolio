@@ -150,7 +150,7 @@ textarea:focus-visible,
 }
 
 /* Custom Cursor styling rules */
-@media (pointer: fine) {
+@media (pointer: fine) and (min-width: 768px) {
   .custom-cursor-active,
   .custom-cursor-active * {
     cursor: none !important;

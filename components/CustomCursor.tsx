@@ -7,15 +7,40 @@ export default function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const [enabled, setEnabled] = useState(false);
 
+  // Hook 1: Check if cursor should be enabled (fine pointer, not reduced motion, and desktop width)
   useEffect(() => {
-    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (!isFinePointer || prefersReducedMotion) return;
-    
-    setEnabled(true);
-    document.body.classList.add("custom-cursor-active");
+    const checkEnabled = () => {
+      if (typeof window === "undefined") return false;
+      const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      const isMobileViewport = window.innerWidth < 768;
+      return isFinePointer && !prefersReducedMotion && !isMobileViewport;
+    };
+
+    const handleResize = () => {
+      const shouldEnable = checkEnabled();
+      setEnabled(shouldEnable);
+      if (shouldEnable) {
+        document.body.classList.add("custom-cursor-active");
+      } else {
+        document.body.classList.remove("custom-cursor-active");
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.body.classList.remove("custom-cursor-active");
+    };
+  }, []);
+
+  // Hook 2: Bind mouse and loop animations, only when enabled is true
+  useEffect(() => {
+    if (!enabled) return;
 
     let ringX = 0;
     let ringY = 0;
@@ -96,9 +121,8 @@ export default function CustomCursor() {
       window.removeEventListener("mouseout", onMouseOut);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
-      document.body.classList.remove("custom-cursor-active");
     };
-  }, []);
+  }, [enabled]);
 
   if (!enabled) return null;
 
@@ -115,3 +139,4 @@ export default function CustomCursor() {
     </>
   );
 }
+

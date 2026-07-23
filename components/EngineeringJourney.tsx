@@ -397,7 +397,7 @@ export default function EngineeringJourney() {
               <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
                 Mapping complex requirements into clean architectural folder structures to bypass engineering bottlenecks.
               </p>
-              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+              <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-80">
                 <VisualProblem active={true} />
               </div>
             </MobileSection>
@@ -406,7 +406,7 @@ export default function EngineeringJourney() {
               <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
                 Designing relational database schemas, microservice APIs, and secure deployment maps prior to code synthesis.
               </p>
-              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+              <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-80">
                 <VisualBlueprint active={true} />
               </div>
             </MobileSection>
@@ -423,7 +423,7 @@ export default function EngineeringJourney() {
                   <MobileStep title="Code Synthesis" desc="Writing React files & API models" />
                   <MobileStep title="Deployment" desc="Building Docker, shipping to AWS" />
                 </div>
-                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex flex-col items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm min-h-[360px]">
+                <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex flex-col items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-[380px]">
                   <VisualForgeAI active={true} step={0} />
                 </div>
               </div>
@@ -433,7 +433,7 @@ export default function EngineeringJourney() {
               <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
                 Integrating real-time geocoding WebSockets (Civic Reporting System) and transactional PostgreSQL engines (E-Commerce Platform), routing queries securely via Caddy reverse proxies.
               </p>
-              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+              <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-80">
                 <VisualNetwork active={true} />
               </div>
             </MobileSection>
@@ -442,7 +442,7 @@ export default function EngineeringJourney() {
               <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
                 Accelerating computer vision inference frames directly in GPU/CUDA buffers, yielding real-time YOLOv8 speeds.
               </p>
-              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+              <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-80">
                 <VisualEdge active={true} />
               </div>
             </MobileSection>
@@ -459,7 +459,7 @@ export default function EngineeringJourney() {
                     <p className="font-display text-sm font-semibold text-white mt-1">Prompt Design in Vertex AI</p>
                   </div>
                 </div>
-                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm h-80">
                   <VisualCredibility active={true} daysData={githubDays} />
                 </div>
               </div>
@@ -475,7 +475,7 @@ export default function EngineeringJourney() {
                     </div>
                   ))}
                 </div>
-                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm min-h-[300px]">
+                <div className="relative border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm min-h-[320px] py-8">
                   <VisualLessons active={true} />
                 </div>
               </div>
