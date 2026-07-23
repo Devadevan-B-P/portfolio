@@ -37,9 +37,31 @@ export default function EngineeringJourney() {
   const [githubDays, setGithubDays] = useState<any[]>([]);
   const [showToast, setShowToast] = useState(false);
 
-  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleEmail = () => {
+    const email = profile.email;
+    const subject = encodeURIComponent("Portfolio Inquiry");
+    const body = encodeURIComponent(
+`Hi Devad,
+
+I came across your portfolio and would like to connect.
+
+Best regards,
+`
+    );
+
+    const isGmail = typeof navigator !== "undefined" && navigator.userAgent.includes("Chrome");
+
+    if (isGmail) {
+      window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`,
+        "_blank"
+      );
+    } else {
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+
     if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(profile.email);
+      navigator.clipboard.writeText(email);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2500);
     }
@@ -169,7 +191,7 @@ export default function EngineeringJourney() {
                   <VisualLessons key="lessons" active={activeChapter === "lessons"} />
                 )}
                 {activeChapter === "final" && (
-                  <VisualFinal key="final" active={activeChapter === "final"} onEmailClick={handleEmailClick} />
+                  <VisualFinal key="final" active={activeChapter === "final"} onEmailClick={handleEmail} />
                 )}
               </AnimatePresence>
             </div>
@@ -497,11 +519,12 @@ export default function EngineeringJourney() {
                 <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
                 <div className="flex gap-4">
                   <a 
-                    href={`https://mail.google.com/mail/?extsrc=mailto&url=mailto:${profile.email}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleEmailClick}
-                    className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5"
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleEmail();
+                    }}
+                    className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5 cursor-pointer"
                   >
                     <Mail className="h-3.5 w-3.5" /> Email
                   </a>
@@ -1199,11 +1222,12 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
       >
         <motion.a 
           variants={itemVariants}
-          href={`https://mail.google.com/mail/?extsrc=mailto&url=mailto:${profile.email}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={onEmailClick}
-          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            if (onEmailClick) onEmailClick(null as any);
+          }}
+          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent cursor-pointer"
         >
           <Mail className="h-4 w-4" /> Email Me
         </motion.a>
