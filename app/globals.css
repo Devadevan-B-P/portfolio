@@ -17,6 +17,8 @@
 html {
   scroll-behavior: auto;
   background: var(--bg-primary);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) var(--bg-primary);
 }
 
 body {
@@ -24,6 +26,7 @@ body {
   color: #ffffff;
   font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
@@ -75,6 +78,8 @@ textarea:focus-visible,
   border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .glass-strong {
@@ -82,6 +87,8 @@ textarea:focus-visible,
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .text-gradient {
@@ -167,4 +174,28 @@ textarea:focus-visible,
   .text-gradient {
     filter: none !important;
   }
+}
+
+/* Cross-browser SVG quality rendering */
+svg {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+/* Recommended Lenis scrolling styles for all browsers */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
