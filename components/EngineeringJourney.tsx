@@ -497,7 +497,9 @@ export default function EngineeringJourney() {
                 <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
                 <div className="flex gap-4">
                   <a 
-                    href={`mailto:${profile.email}`} 
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={handleEmailClick}
                     className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5"
                   >
@@ -1197,7 +1199,9 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
       >
         <motion.a 
           variants={itemVariants}
-          href={`mailto:${profile.email}`} 
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={onEmailClick}
           className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
         >
