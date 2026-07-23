@@ -3,7 +3,7 @@ export const profile = {
   role: "Full-Stack AI Software Engineer",
   headline: "Designing software that thinks before it ships.",
   location: "Thiruvananthapuram, Kerala, India",
-  email: "devadevan62338@gmail.com",
+  email: "needprojects123@gmail.com",
   github: "https://github.com/devadevan-b-p",
   linkedin: "https://www.linkedin.com/in/devadevan-b-p-894000356/",
   summary:

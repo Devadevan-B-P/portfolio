@@ -1109,6 +1109,15 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
 const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
   if (!active) return null;
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } 
+    }
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -1118,8 +1127,8 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
         visible: {
           opacity: 1,
           transition: {
-            staggerChildren: 0.35,
-            delayChildren: 0.5
+            staggerChildren: 0.15,
+            delayChildren: 0.2
           }
         }
       }}
@@ -1127,10 +1136,7 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
     >
       {/* Title fade in (credits typography) */}
       <motion.h3 
-        variants={{
-          hidden: { opacity: 0, y: 15, filter: "blur(5px)" },
-          visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: [0.22, 0.61, 0.36, 1] } }
-        }}
+        variants={itemVariants}
         className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3"
       >
         Let&apos;s Build The Next One.
@@ -1138,8 +1144,8 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
 
       <motion.p 
         variants={{
-          hidden: { opacity: 0, y: 10 },
-          visible: { opacity: 0.5, y: 0, transition: { duration: 0.8 } }
+          hidden: { opacity: 0, y: 12 },
+          visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } }
         }}
         className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
       >
@@ -1149,23 +1155,31 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
       {/* Staggered Contact Buttons reveal */}
       <motion.div 
         variants={{
-          hidden: { opacity: 0, y: 10 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          hidden: { opacity: 0 },
+          visible: { 
+            opacity: 1, 
+            transition: { 
+              staggerChildren: 0.1,
+              delayChildren: 0.1
+            } 
+          }
         }}
         className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
       >
-        <a 
+        <motion.a 
+          variants={itemVariants}
           href={`mailto:${profile.email}`} 
-          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-all duration-300 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
         >
           <Mail className="h-4 w-4" /> Email Me
-        </a>
-        <div className="flex gap-2">
+        </motion.a>
+        
+        <motion.div className="flex gap-2" variants={itemVariants}>
           <a 
             href={profile.github} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-colors flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
           >
             <Github className="h-3.5 w-3.5" /> GitHub
           </a>
@@ -1173,11 +1187,11 @@ const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
             href={profile.linkedin} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-colors flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
           >
             <Linkedin className="h-3.5 w-3.5" /> LinkedIn
           </a>
-        </div>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

@@ -80,7 +80,7 @@ export default function Navbar() {
         <a
           href="/Devadevan_B_P_Resume.pdf"
           download
-          className="glass-strong group hidden md:flex items-center gap-1.5 rounded-pill px-4.5 py-2.5 font-body text-xs uppercase tracking-wider font-semibold text-white transition-transform duration-300 ease-cinematic hover:scale-[1.03] pointer-events-auto"
+          className="glass-strong group hidden md:flex items-center gap-1.5 rounded-pill px-6 py-2.5 font-body text-xs uppercase tracking-wider font-semibold text-white transition-transform duration-300 ease-cinematic hover:scale-[1.03] pointer-events-auto"
         >
           Résumé
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -92,7 +92,7 @@ export default function Navbar() {
           className="glass flex h-10 w-10 items-center justify-center rounded-full text-white md:hidden pointer-events-auto"
           aria-label="Toggle menu"
         >
-          {isOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </motion.header>
 
