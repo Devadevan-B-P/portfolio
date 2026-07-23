@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "@/lib/data";
@@ -12,6 +12,27 @@ const links = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Lock body scroll and pause Lenis scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      if ((window as any).lenis) {
+        (window as any).lenis.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      if ((window as any).lenis) {
+        (window as any).lenis.start();
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      if ((window as any).lenis) {
+        (window as any).lenis.start();
+      }
+    };
+  }, [isOpen]);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -75,46 +96,58 @@ export default function Navbar() {
         </button>
       </motion.header>
 
-      {/* Mobile Menu Panel */}
+      {/* Mobile Menu Panel & Backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
-            className="glass-strong fixed top-20 left-6 right-6 z-40 flex flex-col gap-2 rounded-card p-6 md:hidden"
-          >
-            {links.map((link, idx) => (
+          <>
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
+            />
+            {/* Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+              className="glass-strong fixed top-20 left-6 right-6 z-40 flex flex-col gap-2 rounded-card p-6 md:hidden"
+            >
+              {links.map((link, idx) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    setIsOpen(false);
+                    handleScroll(e, link.href);
+                  }}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="rounded-btn px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:bg-white/5 hover:text-white"
+                >
+                  {link.label}
+                </motion.a>
+              ))}
+              <div className="my-2 border-t border-white/5" />
               <motion.a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  setIsOpen(false);
-                  handleScroll(e, link.href);
-                }}
+                href="/Devadevan_B_P_Resume.pdf"
+                download
+                onClick={() => setIsOpen(false)}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                className="rounded-btn px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:bg-white/5 hover:text-white"
+                transition={{ delay: links.length * 0.05 }}
+                className="flex items-center justify-between rounded-btn bg-white/5 hover:bg-accent hover:text-black px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors"
               >
-                {link.label}
+                <span>Résumé</span>
+                <ArrowUpRight className="h-4 w-4" />
               </motion.a>
-            ))}
-            <div className="my-2 border-t border-white/5" />
-            <motion.a
-              href="/Devadevan_B_P_Resume.pdf"
-              download
-              onClick={() => setIsOpen(false)}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: links.length * 0.05 }}
-              className="flex items-center justify-between rounded-btn bg-white/5 hover:bg-accent hover:text-black px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors"
-            >
-              <span>Résumé</span>
-              <ArrowUpRight className="h-4 w-4" />
-            </motion.a>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

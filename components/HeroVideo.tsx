@@ -7,21 +7,54 @@ export default function HeroVideo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [shouldRender, setShouldRender] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { scrollY } = useScroll();
   // Fade out between 0 and 700px of scroll
   const opacity = useTransform(scrollY, [0, 700], [0.25, 0]);
 
+  // Check for mobile screens on mount and window resize
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    setIsMobile(media.matches);
+    const listener = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
   // Keep track of scroll to disable rendering when off-screen for performance
   useEffect(() => {
-    return scrollY.onChange((latest) => {
+    // If mobile, we do not render the video anyway
+    if (isMobile) return;
+
+    // Use framer-motion's recommended event subscription
+    const unsubscribe = scrollY.on("change", (latest) => {
       if (latest > 1000) {
-        if (shouldRender) setShouldRender(false);
+        setShouldRender(false);
       } else {
-        if (!shouldRender) setShouldRender(true);
+        setShouldRender(true);
       }
     });
-  }, [scrollY, shouldRender]);
+    return () => unsubscribe();
+  }, [scrollY, isMobile]);
+
+  if (isMobile) {
+    return (
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#050505]"
+        aria-hidden="true"
+      >
+        {/* Dark overlay gradients for contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
+        <div 
+          className="absolute inset-0"
+          style={{ backgroundImage: "radial-gradient(circle at center, transparent 30%, #050505 100%)" }}
+        />
+      </div>
+    );
+  }
 
   if (!shouldRender) return null;
 
@@ -48,7 +81,11 @@ export default function HeroVideo() {
       </motion.div>
       {/* Dark overlay gradients for contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
-      <div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 30%, #050505 100%)" />
+      <div 
+        className="absolute inset-0"
+        style={{ backgroundImage: "radial-gradient(circle at center, transparent 30%, #050505 100%)" }}
+      />
     </div>
   );
 }
+

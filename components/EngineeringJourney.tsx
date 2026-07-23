@@ -388,92 +388,118 @@ export default function EngineeringJourney() {
       ) : (
         /* MOBILE VIEW (Simplified vertical timeline) */
         <div className="px-6 py-20 flex flex-col gap-16 relative">
-        <div className="absolute left-10 top-24 bottom-24 w-0.5 bg-white/5" />
+          {/* Timeline Vertical Line aligned at left-10 (40px) */}
+          <div className="absolute left-10 top-24 bottom-24 w-0.5 bg-white/5" />
 
-        <div className="relative pl-12 space-y-20">
-          
-          <MobileSection title="01 // The Problem" icon={Lightbulb}>
-            <p className="font-body text-sm leading-relaxed text-text-secondary">
-              Mapping complex requirements into clean architectural folder structures to bypass engineering bottlenecks.
-            </p>
-          </MobileSection>
-
-          <MobileSection title="02 // The Blueprint" icon={MapIcon}>
-            <p className="font-body text-sm leading-relaxed text-text-secondary">
-              Designing relational database schemas, microservice APIs, and secure deployment maps prior to code synthesis.
-            </p>
-          </MobileSection>
-
-          <MobileSection title="03 // Forge AI (Flagship)" icon={Cpu} highlighted>
-            <div className="space-y-4">
-              <p className="font-body text-sm leading-relaxed text-text-secondary font-medium">
-                An autonomous coding engine converting natural text requirements to production-ready deployed apps using Docker, Caddy HTTPS, AWS EC2, and MongoDB Atlas.
+          <div className="relative pl-12 space-y-20">
+            
+            <MobileSection title="01 // The Problem" icon={Lightbulb}>
+              <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
+                Mapping complex requirements into clean architectural folder structures to bypass engineering bottlenecks.
               </p>
-              <div className="border-l border-accent/20 pl-4 space-y-3 py-1">
-                <MobileStep title="User Input" desc='forge create app "CRM platform"' />
-                <MobileStep title="PRD Generation" desc="Extracting features, data boundaries" />
-                <MobileStep title="Architecture" desc="Generating schemas & routing maps" />
-                <MobileStep title="Code Synthesis" desc="Writing React files & API models" />
-                <MobileStep title="Deployment" desc="Building Docker, shipping to AWS" />
+              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                <VisualProblem active={true} />
               </div>
-            </div>
-          </MobileSection>
+            </MobileSection>
 
-          <MobileSection title="04 // The Network" icon={Globe}>
-            <p className="font-body text-sm leading-relaxed text-text-secondary">
-              Integrating real-time geocoding WebSockets (Civic Reporting System) and transactional PostgreSQL engines (E-Commerce Platform), routing queries securely via Caddy reverse proxies.
-            </p>
-          </MobileSection>
-
-          <MobileSection title="05 // The Edge" icon={Eye}>
-            <p className="font-body text-sm leading-relaxed text-text-secondary">
-              Accelerating computer vision inference frames directly in GPU/CUDA buffers, yielding real-time YOLOv8 speeds.
-            </p>
-          </MobileSection>
-
-          <MobileSection title="06 // Credibility" icon={Award}>
-            <div className="space-y-3">
-              <div className="border border-border-subtle bg-card rounded-btn p-4">
-                <span className="mono-tag text-[9px] text-accent font-semibold block uppercase">ICT ACADEMY OF KERALA</span>
-                <p className="font-display text-sm font-semibold text-white mt-1">AWS Fundamentals Internship</p>
+            <MobileSection title="02 // The Blueprint" icon={MapIcon}>
+              <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
+                Designing relational database schemas, microservice APIs, and secure deployment maps prior to code synthesis.
+              </p>
+              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                <VisualBlueprint active={true} />
               </div>
-              <div className="border border-border-subtle bg-card rounded-btn p-4">
-                <span className="mono-tag text-[9px] text-accent font-semibold block uppercase">GOOGLE CLOUD</span>
-                <p className="font-display text-sm font-semibold text-white mt-1">Prompt Design in Vertex AI</p>
-              </div>
-            </div>
-          </MobileSection>
+            </MobileSection>
 
-          <MobileSection title="07 // Principles" icon={BookOpen}>
-            <div className="space-y-4 text-xs font-body text-text-secondary">
-              {principles.map((pr, idx) => (
-                <div key={idx} className="border-l border-white/10 pl-3">
-                  <h4 className="font-display text-white font-semibold text-xs mb-1">{pr.title}</h4>
-                  <p className="text-[11px] text-text-muted">{pr.desc}</p>
+            <MobileSection title="03 // Forge AI (Flagship)" icon={Cpu} highlighted>
+              <div className="space-y-4">
+                <p className="font-body text-sm leading-relaxed text-text-secondary font-medium">
+                  An autonomous coding engine converting natural text requirements to production-ready deployed apps using Docker, Caddy HTTPS, AWS EC2, and MongoDB Atlas.
+                </p>
+                <div className="border-l border-accent/20 pl-4 space-y-3 py-1 mb-6">
+                  <MobileStep title="User Input" desc='forge create app "CRM platform"' />
+                  <MobileStep title="PRD Generation" desc="Extracting features, data boundaries" />
+                  <MobileStep title="Architecture" desc="Generating schemas & routing maps" />
+                  <MobileStep title="Code Synthesis" desc="Writing React files & API models" />
+                  <MobileStep title="Deployment" desc="Building Docker, shipping to AWS" />
                 </div>
-              ))}
-            </div>
-          </MobileSection>
-
-          <MobileSection title="08 // Final Scene" icon={CheckCircle2}>
-            <div className="pt-2">
-              <h3 className="font-display text-2xl font-semibold tracking-tight text-white mb-2">Let&apos;s Build The Next One.</h3>
-              <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
-              <div className="flex gap-4">
-                <a href={`mailto:${profile.email}`} className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5" /> Email
-                </a>
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
-                  <Github className="h-3.5 w-3.5" /> GitHub
-                </a>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
-                  <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-                </a>
+                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex flex-col items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm min-h-[360px]">
+                  <VisualForgeAI active={true} step={0} />
+                </div>
               </div>
-            </div>
-          </MobileSection>
+            </MobileSection>
+
+            <MobileSection title="04 // The Network" icon={Globe}>
+              <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
+                Integrating real-time geocoding WebSockets (Civic Reporting System) and transactional PostgreSQL engines (E-Commerce Platform), routing queries securely via Caddy reverse proxies.
+              </p>
+              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                <VisualNetwork active={true} />
+              </div>
+            </MobileSection>
+
+            <MobileSection title="05 // The Edge" icon={Eye}>
+              <p className="font-body text-sm leading-relaxed text-text-secondary mb-6">
+                Accelerating computer vision inference frames directly in GPU/CUDA buffers, yielding real-time YOLOv8 speeds.
+              </p>
+              <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                <VisualEdge active={true} />
+              </div>
+            </MobileSection>
+
+            <MobileSection title="06 // Credibility" icon={Award}>
+              <div className="space-y-4">
+                <div className="space-y-3 mb-6">
+                  <div className="border border-border-subtle bg-card rounded-btn p-4">
+                    <span className="mono-tag text-[9px] text-accent font-semibold block uppercase">ICT ACADEMY OF KERALA</span>
+                    <p className="font-display text-sm font-semibold text-white mt-1">AWS Fundamentals Internship</p>
+                  </div>
+                  <div className="border border-border-subtle bg-card rounded-btn p-4">
+                    <span className="mono-tag text-[9px] text-accent font-semibold block uppercase">GOOGLE CLOUD</span>
+                    <p className="font-display text-sm font-semibold text-white mt-1">Prompt Design in Vertex AI</p>
+                  </div>
+                </div>
+                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm">
+                  <VisualCredibility active={true} daysData={githubDays} />
+                </div>
+              </div>
+            </MobileSection>
+
+            <MobileSection title="07 // Principles" icon={BookOpen}>
+              <div className="space-y-6">
+                <div className="space-y-4 text-xs font-body text-text-secondary">
+                  {principles.map((pr, idx) => (
+                    <div key={idx} className="border-l border-white/10 pl-3">
+                      <h4 className="font-display text-white font-semibold text-xs mb-1">{pr.title}</h4>
+                      <p className="text-[11px] text-text-muted">{pr.desc}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="border border-border-subtle bg-surface/10 rounded-card p-4 flex items-center justify-center overflow-hidden w-full max-w-sm backdrop-blur-sm min-h-[300px]">
+                  <VisualLessons active={true} />
+                </div>
+              </div>
+            </MobileSection>
+
+            <MobileSection title="08 // Final Scene" icon={CheckCircle2}>
+              <div className="pt-2">
+                <h3 className="font-display text-2xl font-semibold tracking-tight text-white mb-2">Let&apos;s Build The Next One.</h3>
+                <p className="font-body text-xs text-text-secondary mb-6">Open to engineering roles, collaborations, and challenging software puzzles.</p>
+                <div className="flex gap-4">
+                  <a href={`mailto:${profile.email}`} className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
+                    <Mail className="h-3.5 w-3.5" /> Email
+                  </a>
+                  <a href={profile.github} target="_blank" rel="noopener noreferrer" className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
+                    <Github className="h-3.5 w-3.5" /> GitHub
+                  </a>
+                  <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="glass px-4 py-2 text-xs font-semibold rounded-pill text-white flex items-center gap-1.5">
+                    <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+                  </a>
+                </div>
+              </div>
+            </MobileSection>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );
@@ -524,7 +550,7 @@ function MobileSection({
       className="relative"
     >
       <div 
-        className={`absolute -left-[54px] top-0 h-9 w-9 rounded-full flex items-center justify-center border bg-bg-primary ${
+        className={`absolute -left-[50px] top-0 h-9 w-9 rounded-full flex items-center justify-center border bg-bg-primary ${
           highlighted ? "border-accent text-accent" : "border-white/10 text-white/60"
         }`}
       >
@@ -1034,7 +1060,7 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full h-full grid grid-cols-2 gap-4 p-8 text-left font-mono text-[9px]"
+      className="w-full h-full grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 sm:p-8 text-left font-mono text-[9px]"
     >
       {/* Principle 1: Users Before Scale */}
       <div className="border border-white/5 rounded-btn p-3 bg-white/[0.005] flex flex-col justify-between">
