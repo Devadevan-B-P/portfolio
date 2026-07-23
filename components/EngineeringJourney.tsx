@@ -26,11 +26,7 @@ import {
 import { projects, education, profile, chapters, principles, ChapterId } from "@/lib/data";
 import { useJourneyProgress } from "@/lib/useJourneyProgress";
 import SpotlightCard from "./SpotlightCard";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import PixelBlast from "./PixelBlast";
 
 interface VisualProps {
   active: boolean;
@@ -225,7 +221,7 @@ Best regards,
               Software engineering is undergoing a tectonic shift. Building today requires mapping complex requirements into microservices, deploying across cloud infrastructure, and maintaining real-time states, often creating bottlenecks for small teams.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
-              I focus on identifying core architectural flawsÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âdisconnects between user intent and folder implementationÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âto design automated workflows that translate abstract ideas into robust running products.
+              I focus on identifying core architectural flawsâ€” disconnects between user intent and folder implementationâ€”to design automated workflows that translate abstract ideas into robust running products.
             </p>
           </section>
 
@@ -236,7 +232,7 @@ Best regards,
               The Blueprint
             </h2>
             <p className="font-body text-base lg:text-lg leading-relaxed text-text-secondary max-w-xl mb-6">
-              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planningÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âdefining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
+              Before writing a single line of code, software must be mapped. Modern product development requires rigorous planningâ€”defining transactional boundaries, structuring relational schemas, and planning AWS network routing topologies.
             </p>
             <p className="font-body text-sm leading-relaxed text-text-muted max-w-xl">
               Through designing architectures for high availability, I bridge frontend applications to server arrays and container deployments, ensuring every dependency tree is clean and scalable.
@@ -416,10 +412,9 @@ Best regards,
             </div>
           </section>
 
-          {/* Stage 8: Final Scene ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â particle swarm fills the right column */}
-          <section id="contact" className="relative min-h-[160vh] py-[20vh]">
-            {/* Sticky canvas that fills viewport height while scrolling */}
-            <ParticleSwarm active={activeChapter === "final"} />
+          {/* Stage 8: Final Scene */}
+          <section id="contact" className="min-h-[160vh] flex flex-col justify-center py-[20vh]">
+            {/* Right column intentionally empty - PixelBlast lives in left sticky panel */}
           </section>
         </div>
       </div>
@@ -829,9 +824,9 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               <div className="space-y-2 text-[10px] leading-relaxed text-text-secondary">
                 <div><span className="text-white font-bold">Project Target:</span> Autonomous developer server</div>
                 <div><span className="text-white font-bold">Scope Constraints:</span></div>
-                <div className="pl-3">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Stateless JWT OAuth credentials mapping</div>
-                <div className="pl-3">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Task schema: UUID Primary Key, status enums</div>
-                <div className="pl-3">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Real-time WebSockets state updates feed</div>
+                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Stateless JWT OAuth credentials mapping</div>
+                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Task schema: UUID Primary Key, status enums</div>
+                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Real-time WebSockets state updates feed</div>
               </div>
             </motion.div>
           )}
@@ -851,7 +846,7 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[React Client] <span className="text-white">ÃƒÂ¢Ã¢â‚¬Â Ã‚Â(HTTP/WS)ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢</span> [Caddy Proxy]</div>
+                <div>[React Client] <span className="text-white">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â(HTTP/WS)ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢</span> [Caddy Proxy]</div>
                 <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
                 <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
@@ -903,13 +898,13 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="text-[9px] leading-relaxed font-mono">
-                <div className="text-accent font-bold">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ src/</div>
-                <div className="pl-3 text-accent font-bold">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ client/</div>
-                <div className="pl-6 text-text-secondary">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ page.tsx</div>
-                <div className="pl-3 text-accent font-bold">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ api/</div>
-                <div className="pl-6 text-text-secondary">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ main.py</div>
-                <div className="pl-6 text-text-secondary">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ models.py</div>
-                <div className="text-text-muted">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ docker-compose.yml</div>
+                <div className="text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ src/</div>
+                <div className="pl-3 text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ client/</div>
+                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ page.tsx</div>
+                <div className="pl-3 text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ api/</div>
+                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ main.py</div>
+                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ models.py</div>
+                <div className="text-text-muted">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ docker-compose.yml</div>
               </div>
             </motion.div>
           )}
@@ -1166,166 +1161,7 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
 });
 
 
-// Standalone particle swarm -- fixed 580x580, transparent bg, no interaction
-function ParticleSwarm({ active }: { active: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const SIZE = 580;
-
-    const scene = new THREE.Scene();
-    // No fog -- keeps canvas background transparent
-
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
-    camera.position.set(0, 0, 100);
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      powerPreference: "high-performance",
-      alpha: true,
-    });
-    renderer.setSize(SIZE, SIZE, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0); // Fully transparent background
-
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(SIZE, SIZE), 2.0, 0.5, 0);
-    composer.addPass(bloomPass);
-
-    const COUNT = 20000;
-    const dummy = new THREE.Object3D();
-    const color = new THREE.Color();
-    const target = new THREE.Vector3();
-
-    const geometry = new THREE.TetrahedronGeometry(0.25);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const instancedMesh = new THREE.InstancedMesh(geometry, material, COUNT);
-    instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    scene.add(instancedMesh);
-
-    const positions: THREE.Vector3[] = [];
-    for (let i = 0; i < COUNT; i++) {
-      positions.push(new THREE.Vector3(
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100
-      ));
-      instancedMesh.setColorAt(i, color.setHex(0x00ff88));
-    }
-
-    const PHI = (1 + Math.sqrt(5)) / 2;
-    const icoVerts = [
-      [-1, PHI, 0], [1, PHI, 0], [-1, -PHI, 0], [1, -PHI, 0],
-      [0, -1, PHI], [0, 1, PHI], [0, -1, -PHI], [0, 1, -PHI],
-      [PHI, 0, -1], [PHI, 0, 1], [-PHI, 0, -1], [-PHI, 0, 1]
-    ];
-    for (let v = 0; v < 12; v++) {
-      const m = Math.sqrt(icoVerts[v][0] ** 2 + icoVerts[v][1] ** 2 + icoVerts[v][2] ** 2);
-      icoVerts[v][0] /= m; icoVerts[v][1] /= m; icoVerts[v][2] /= m;
-    }
-
-    const S = 25, ROTATE = 0.5, PULSE = 0.2;
-    const clock = new THREE.Clock();
-    let rafId: number;
-
-    const tick = () => {
-      rafId = requestAnimationFrame(tick);
-      const time = clock.getElapsedTime();
-      const t = time * ROTATE;
-
-      for (let i = 0; i < COUNT; i++) {
-        const ratio = i / COUNT;
-        const phi = Math.acos(1 - 2 * (i + 0.5) / COUNT);
-        const theta = Math.PI * (3 - Math.sqrt(5)) * i;
-
-        let cx = Math.sin(phi) * Math.cos(theta);
-        let cy = Math.sin(phi) * Math.sin(theta);
-        let cz = Math.cos(phi);
-        let rad = S, hue = 0, sat = 0, light = 0;
-
-        if (ratio < 0.1) {
-          rad = S * 0.1; hue = 0.63; sat = 0.8; light = 0.6;
-        } else if (ratio < 0.3) {
-          const vIdx = Math.floor((ratio - 0.1) / 0.2 * 12) % 12;
-          const blend = 0.35;
-          cx = cx * (1 - blend) + icoVerts[vIdx][0] * blend;
-          cy = cy * (1 - blend) + icoVerts[vIdx][1] * blend;
-          cz = cz * (1 - blend) + icoVerts[vIdx][2] * blend;
-          const d = Math.max(Math.sqrt(cx * cx + cy * cy + cz * cz), 0.001);
-          cx /= d; cy /= d; cz /= d;
-          rad = S * 0.25 * (1 + Math.sin(i * 0.3 + t * 2.5) * 0.18);
-          hue = 0.09 + Math.sin(i * 0.4 + t) * 0.03;
-          sat = 0.85 + Math.cos(i * 0.3 + t) * 0.15;
-          light = 0.4 + Math.sin(i * 0.5 + t * 1.5) * 0.15;
-        } else if (ratio < 0.38) {
-          rad = S * 0.42 * (1 + Math.sin(i * 0.15 + t * 1.2) * 0.06);
-          hue = 0.97; sat = 0.55; light = 0.65 + Math.sin(i * 0.2 + t * 0.8) * 0.12;
-        } else if (ratio < 0.65) {
-          rad = S * 0.58 * (1 + Math.sin(i * 0.5 + t * 3) * 0.3) + Math.sin(i * 2.5 + t * 4) * 0.35 * S * 0.12;
-          hue = 0.03 + Math.sin(i * 0.6 + t * 2) * 0.04;
-          sat = 0.95 + Math.cos(i * 0.4 + t) * 0.05;
-          light = 0.5 + Math.sin(i * 0.5 + t * 1.5) * 0.12;
-        } else if (ratio < 0.85) {
-          rad = S * 0.68 * (1 + Math.sin(i * 0.4 + t * 3.2) * 0.25) + Math.cos(i * 3 + t * 5) * 0.3 * S * 0.1;
-          hue = 0.1 + Math.cos(i * 0.5 + t * 2.5) * 0.04;
-          sat = 0.9; light = 0.55 + Math.sin(i * 0.4 + t * 1.8) * 0.15;
-        } else {
-          rad = S * 0.78 * (1 + Math.sin(i * 0.35 + t * 3.8) * 0.45) + Math.cos(i * 3.5 + t * 5.5) * 0.3 * S * 0.18;
-          hue = 0.13 + Math.cos(i * 0.5 + t * 2.8) * 0.04;
-          sat = 0.85; light = 0.6 + Math.sin(i * 0.4 + t * 2) * 0.18;
-        }
-
-        rad *= 1 + Math.sin(t * 2) * PULSE * 0.06;
-        const cosA = Math.cos(t * 0.35), sinA = Math.sin(t * 0.35);
-        target.set((cx * cosA - cz * sinA) * rad, cy * rad, (cx * sinA + cz * cosA) * rad);
-        color.setHSL(hue, sat, light);
-        positions[i].lerp(target, 0.1);
-        dummy.position.copy(positions[i]);
-        dummy.updateMatrix();
-        instancedMesh.setMatrixAt(i, dummy.matrix);
-        instancedMesh.setColorAt(i, color);
-      }
-
-      instancedMesh.instanceMatrix.needsUpdate = true;
-      if (instancedMesh.instanceColor) instancedMesh.instanceColor.needsUpdate = true;
-      composer.render();
-    };
-
-    tick();
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      geometry.dispose();
-      material.dispose();
-      instancedMesh.dispose();
-      renderer.dispose();
-    };
-  }, []);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 0.92 }}
-      transition={{ duration: 1.4, ease: [0.22, 0.61, 0.36, 1] }}
-      className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none"
-    >
-      {/* Fixed 580x580 -- transparent, blends with page bg */}
-      <canvas
-        ref={canvasRef}
-        width={580}
-        height={580}
-        style={{ width: 580, height: 580, display: "block" }}
-      />
-    </motion.div>
-  );
-}
-
-// 8. Final Scene Visualizer -- clean contact card
+// 8. Final Scene — PixelBlast fills the left panel, contact card floats on top
 const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
   if (!active) return null;
 
@@ -1336,52 +1172,84 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
 
   return (
     <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
-      }}
-      className="w-full h-full flex flex-col items-center justify-center text-center p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
+      className="relative w-full h-full"
     >
-      <motion.h3
-        variants={itemVariants}
-        className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3"
-      >
-        Let&apos;s Build The Next One.
-      </motion.h3>
+      {/* PixelBlast fills entire left panel */}
+      <div className="absolute inset-0">
+        <PixelBlast
+          variant="circle"
+          pixelSize={6}
+          color="#B497CF"
+          patternScale={3}
+          patternDensity={1.2}
+          pixelSizeJitter={0.5}
+          enableRipples
+          rippleSpeed={0.4}
+          rippleThickness={0.12}
+          rippleIntensityScale={1.5}
+          liquid
+          liquidStrength={0.12}
+          liquidRadius={1.2}
+          liquidWobbleSpeed={5}
+          speed={0.6}
+          edgeFade={0.25}
+          transparent
+        />
+      </div>
 
-      <motion.p
-        variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } } }}
-        className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
-      >
-        Open to engineering roles, collaborations, and challenging software puzzles.
-      </motion.p>
-
+      {/* Contact card floats on top of the animation */}
       <motion.div
-        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
-        className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
+        }}
+        className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10"
       >
-        <motion.a
+        <motion.h3
           variants={itemVariants}
-          href="#"
-          onClick={(e) => { e.preventDefault(); if (onEmailClick) onEmailClick(null as any); }}
-          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer"
+          className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3 drop-shadow-lg"
         >
-          <Mail className="h-4 w-4" /> Email Me
-        </motion.a>
+          Let&apos;s Build The Next One.
+        </motion.h3>
 
-        <motion.div className="flex gap-2" variants={itemVariants}>
-          <a href={profile.github} target="_blank" rel="noopener noreferrer"
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
+        <motion.p
+          variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 0.7, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } } }}
+          className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
+        >
+          Open to engineering roles, collaborations, and challenging software puzzles.
+        </motion.p>
+
+        <motion.div
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
+          className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+        >
+          <motion.a
+            variants={itemVariants}
+            href="#"
+            onClick={(e) => { e.preventDefault(); if (onEmailClick) onEmailClick(null as any); }}
+            className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Github className="h-3.5 w-3.5" /> GitHub
-          </a>
-          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer"
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
-          >
-            <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-          </a>
+            <Mail className="h-4 w-4" /> Email Me
+          </motion.a>
+
+          <motion.div className="flex gap-2" variants={itemVariants}>
+            <a href={profile.github} target="_blank" rel="noopener noreferrer"
+              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
+            >
+              <Github className="h-3.5 w-3.5" /> GitHub
+            </a>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer"
+              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
+            >
+              <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+            </a>
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>

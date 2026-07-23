@@ -15,6 +15,7 @@
     "lenis": "1.1.14",
     "lucide-react": "0.454.0",
     "next": "15.5.21",
+    "postprocessing": "^6.39.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "three": "^0.185.1"
