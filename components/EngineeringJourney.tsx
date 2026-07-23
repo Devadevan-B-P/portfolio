@@ -26,6 +26,11 @@ import {
 import { projects, education, profile, chapters, principles, ChapterId } from "@/lib/data";
 import { useJourneyProgress } from "@/lib/useJourneyProgress";
 import SpotlightCard from "./SpotlightCard";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 interface VisualProps {
   active: boolean;
@@ -1161,6 +1166,255 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
 
 // 8. Final Scene Visualizer (The Movie Credits-Style Ending)
 const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!active || !canvasRef.current) return;
+
+    // CONFIG
+    const COUNT = 20000;
+    const SPEED_MULT = 1;
+    const AUTO_SPIN = false;
+
+    // SETUP
+    const canvas = canvasRef.current;
+    const width = canvas.clientWidth || 400;
+    const height = canvas.clientHeight || 400;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.015);
+
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000);
+    camera.position.set(0, 0, 90);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      powerPreference: "high-performance",
+      alpha: true,
+    });
+    renderer.setSize(width, height, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.autoRotate = AUTO_SPIN;
+    controls.autoRotateSpeed = 2.0;
+    controls.minDistance = 30;
+    controls.maxDistance = 250;
+
+    // POST PROCESSING
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(width, height),
+      1.5,
+      0.4,
+      0.85
+    );
+    bloomPass.strength = 1.8;
+    bloomPass.radius = 0.4;
+    bloomPass.threshold = 0;
+    composer.addPass(bloomPass);
+
+    // SWARM OBJECTS
+    const dummy = new THREE.Object3D();
+    const color = new THREE.Color();
+    const target = new THREE.Vector3();
+
+    // INSTANCED MESH
+    const geometry = new THREE.TetrahedronGeometry(0.25);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    const instancedMesh = new THREE.InstancedMesh(geometry, material, COUNT);
+    instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(instancedMesh);
+
+    // DATA ARRAYS
+    const positions: THREE.Vector3[] = [];
+    for (let i = 0; i < COUNT; i++) {
+      positions.push(
+        new THREE.Vector3(
+          (Math.random() - 0.5) * 100,
+          (Math.random() - 0.5) * 100,
+          (Math.random() - 0.5) * 100
+        )
+      );
+      instancedMesh.setColorAt(i, color.setHex(0x00ff88));
+    }
+
+    // Pre-calculate icosahedron vertices for flavivirus structure
+    const PHI = (1 + Math.sqrt(5)) / 2;
+    const icoVerts = [
+      [-1, PHI, 0], [1, PHI, 0], [-1, -PHI, 0], [1, -PHI, 0],
+      [0, -1, PHI], [0, 1, PHI], [0, -1, -PHI], [0, 1, -PHI],
+      [PHI, 0, -1], [PHI, 0, 1], [-PHI, 0, -1], [-PHI, 0, 1]
+    ];
+    for (let v = 0; v < 12; v++) {
+      const m = Math.sqrt(
+        icoVerts[v][0] * icoVerts[v][0] +
+        icoVerts[v][1] * icoVerts[v][1] +
+        icoVerts[v][2] * icoVerts[v][2]
+      );
+      icoVerts[v][0] /= m;
+      icoVerts[v][1] /= m;
+      icoVerts[v][2] /= m;
+    }
+
+    // CONTROL PARAMETERS
+    const PARAMS = { scale: 25, rotate: 0.5, pulse: 0.2 };
+
+    const clock = new THREE.Clock();
+    let animationFrameId: number;
+
+    const tick = () => {
+      animationFrameId = requestAnimationFrame(tick);
+
+      const time = clock.getElapsedTime() * SPEED_MULT;
+
+      // Update OrbitControls
+      controls.update();
+
+      // Swarm Update loop
+      for (let i = 0; i < COUNT; i++) {
+        const S = PARAMS.scale;
+        const spd = PARAMS.rotate;
+        const pulse = PARAMS.pulse;
+
+        const t = time * spd;
+        const ratio = i / COUNT;
+        const phi_angle = Math.acos(1 - 2 * (i + 0.5) / COUNT);
+        const theta = Math.PI * (3 - Math.sqrt(5)) * i;
+
+        let cx = Math.sin(phi_angle) * Math.cos(theta);
+        let cy = Math.sin(phi_angle) * Math.sin(theta);
+        let cz = Math.cos(phi_angle);
+
+        let rad = S;
+        let hue = 0;
+        let sat = 0;
+        let light = 0;
+
+        if (ratio < 0.1) {
+          // ssRNA Genome - Bluish violet
+          rad = S * 0.1;
+          cx = Math.sin(phi_angle) * Math.cos(theta);
+          cy = Math.sin(phi_angle) * Math.sin(theta);
+          cz = Math.cos(phi_angle);
+          hue = 0.63;
+          sat = 0.8;
+          light = 0.6;
+        } else if (ratio < 0.3) {
+          // Nucleocapsid Core - Icosahedral
+          const vIdx = Math.floor((ratio - 0.1) / 0.2 * 12) % 12;
+          const vx = icoVerts[vIdx][0];
+          const vy = icoVerts[vIdx][1];
+          const vz = icoVerts[vIdx][2];
+
+          const blend = 0.35;
+          cx = cx * (1 - blend) + vx * blend;
+          cy = cy * (1 - blend) + vy * blend;
+          cz = cz * (1 - blend) + vz * blend;
+
+          const dist = Math.sqrt(cx * cx + cy * cy + cz * cz);
+          const safeDist = Math.max(dist, 0.001);
+          cx /= safeDist;
+          cy /= safeDist;
+          cz /= safeDist;
+
+          rad = S * 0.25 * (1 + Math.sin(i * 0.3 + t * 2.5) * 0.18);
+          hue = 0.09 + Math.sin(i * 0.4 + t) * 0.03;
+          sat = 0.85 + Math.cos(i * 0.3 + t) * 0.15;
+          light = 0.4 + Math.sin(i * 0.5 + t * 1.5) * 0.15;
+        } else if (ratio < 0.38) {
+          // Lipid Envelope - Pinkish red
+          rad = S * 0.42 * (1 + Math.sin(i * 0.15 + t * 1.2) * 0.06);
+          hue = 0.97;
+          sat = 0.55;
+          light = 0.65 + Math.sin(i * 0.2 + t * 0.8) * 0.12;
+        } else if (ratio < 0.65) {
+          // E Protein Dimers - Red spikes
+          rad = S * 0.58 * (1 + Math.sin(i * 0.5 + t * 3) * 0.3);
+          const eWave = Math.sin(i * 2.5 + t * 4) * 0.35;
+          rad += eWave * (S * 0.12);
+          hue = 0.03 + Math.sin(i * 0.6 + t * 2) * 0.04;
+          sat = 0.95 + Math.cos(i * 0.4 + t) * 0.05;
+          light = 0.5 + Math.sin(i * 0.5 + t * 1.5) * 0.12;
+        } else if (ratio < 0.85) {
+          // M Protein - Orange surface proteins
+          rad = S * 0.68 * (1 + Math.sin(i * 0.4 + t * 3.2) * 0.25);
+          const mWave = Math.cos(i * 3 + t * 5) * 0.3;
+          rad += mWave * (S * 0.1);
+          hue = 0.1 + Math.cos(i * 0.5 + t * 2.5) * 0.04;
+          sat = 0.9;
+          light = 0.55 + Math.sin(i * 0.4 + t * 1.8) * 0.15;
+        } else {
+          // Glycoprotein spikes - Golden
+          rad = S * 0.78 * (1 + Math.sin(i * 0.35 + t * 3.8) * 0.45);
+          const outerSpike = Math.cos(i * 3.5 + t * 5.5) * 0.3;
+          rad += outerSpike * (S * 0.18);
+          hue = 0.13 + Math.cos(i * 0.5 + t * 2.8) * 0.04;
+          sat = 0.85;
+          light = 0.6 + Math.sin(i * 0.4 + t * 2) * 0.18;
+        }
+
+        const breathe = 1 + Math.sin(t * 2) * pulse * 0.06;
+        rad *= breathe;
+
+        const cosA = Math.cos(time * 0.08);
+        const sinA = Math.sin(time * 0.08);
+        const rx = cx * cosA - cz * sinA;
+        const rz = cx * sinA + cz * cosA;
+        const ry = cy;
+
+        const finalX = rx * rad;
+        const finalY = ry * rad;
+        const finalZ = rz * rad;
+
+        target.set(finalX, finalY, finalZ);
+        color.setHSL(hue, sat, light);
+
+        // LERP & UPDATE
+        positions[i].lerp(target, 0.08);
+        dummy.position.copy(positions[i]);
+        dummy.updateMatrix();
+        instancedMesh.setMatrixAt(i, dummy.matrix);
+        instancedMesh.setColorAt(i, color);
+      }
+
+      instancedMesh.instanceMatrix.needsUpdate = true;
+      if (instancedMesh.instanceColor) {
+        instancedMesh.instanceColor.needsUpdate = true;
+      }
+
+      composer.render();
+    };
+
+    tick();
+
+    // Resize Handler
+    const handleResize = () => {
+      if (!canvas) return;
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+      composer.setSize(w, h);
+    };
+    window.addEventListener("resize", handleResize);
+
+    // CLEANUP
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+      geometry.dispose();
+      material.dispose();
+      instancedMesh.dispose();
+      renderer.dispose();
+    };
+  }, [active]);
+
   if (!active) return null;
 
   const itemVariants = {
@@ -1173,84 +1427,90 @@ const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: Vi
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0 },
-        visible: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.15,
-            delayChildren: 0.2
-          }
-        }
-      }}
-      className="w-full h-full flex flex-col items-center justify-center text-center p-6"
-    >
-      {/* Title fade in (credits typography) */}
-      <motion.h3 
-        variants={itemVariants}
-        className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3"
-      >
-        Let&apos;s Build The Next One.
-      </motion.h3>
-
-      <motion.p 
-        variants={{
-          hidden: { opacity: 0, y: 12 },
-          visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } }
-        }}
-        className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
-      >
-        Open to engineering roles, collaborations, and challenging software puzzles.
-      </motion.p>
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {/* 3D Particle Swarm Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block z-0 opacity-80" />
       
-      {/* Staggered Contact Buttons reveal */}
-      <motion.div 
+      {/* Visual overlay content (the contact card) */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
         variants={{
           hidden: { opacity: 0 },
-          visible: { 
-            opacity: 1, 
-            transition: { 
-              staggerChildren: 0.1,
-              delayChildren: 0.1
-            } 
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.15,
+              delayChildren: 0.2
+            }
           }
         }}
-        className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+        className="relative z-10 w-full max-w-sm p-8 flex flex-col items-center justify-center text-center glass-strong rounded-[24px] border border-white/5 shadow-2xl backdrop-blur-md"
       >
-        <motion.a 
+        {/* Title fade in (credits typography) */}
+        <motion.h3 
           variants={itemVariants}
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            if (onEmailClick) onEmailClick(null as any);
-          }}
-          className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent cursor-pointer"
+          className="font-display text-3xl font-bold tracking-tight text-white mb-2"
         >
-          <Mail className="h-4 w-4" /> Email Me
-        </motion.a>
+          Let&apos;s Build The Next One.
+        </motion.h3>
+
+        <motion.p 
+          variants={{
+            hidden: { opacity: 0, y: 12 },
+            visible: { opacity: 0.5, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] } }
+          }}
+          className="font-body text-[11px] text-text-secondary mb-8 max-w-xs leading-relaxed"
+        >
+          Open to engineering roles, collaborations, and challenging software puzzles.
+        </motion.p>
         
-        <motion.div className="flex gap-2" variants={itemVariants}>
-          <a 
-            href={profile.github} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+        {/* Staggered Contact Buttons reveal */}
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { 
+              opacity: 1, 
+              transition: { 
+                staggerChildren: 0.1,
+                delayChildren: 0.1
+              } 
+            }
+          }}
+          className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
+        >
+          <motion.a 
+            variants={itemVariants}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onEmailClick) onEmailClick(null as any);
+            }}
+            className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent cursor-pointer"
           >
-            <Github className="h-3.5 w-3.5" /> GitHub
-          </a>
-          <a 
-            href={profile.linkedin} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-          >
-            <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-          </a>
+            <Mail className="h-4 w-4" /> Email Me
+          </motion.a>
+          
+          <motion.div className="flex gap-2" variants={itemVariants}>
+            <a 
+              href={profile.github} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            >
+              <Github className="h-3.5 w-3.5" /> GitHub
+            </a>
+            <a 
+              href={profile.linkedin} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            >
+              <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+            </a>
+          </motion.div>
         </motion.div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 });
