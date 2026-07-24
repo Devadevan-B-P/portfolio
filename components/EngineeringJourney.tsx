@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -824,9 +824,9 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               <div className="space-y-2 text-[10px] leading-relaxed text-text-secondary">
                 <div><span className="text-white font-bold">Project Target:</span> Autonomous developer server</div>
                 <div><span className="text-white font-bold">Scope Constraints:</span></div>
-                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Stateless JWT OAuth credentials mapping</div>
-                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Task schema: UUID Primary Key, status enums</div>
-                <div className="pl-3">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Real-time WebSockets state updates feed</div>
+                <div className="pl-3">• Stateless JWT OAuth credentials mapping</div>
+                <div className="pl-3">• Task schema: UUID Primary Key, status enums</div>
+                <div className="pl-3">• Real-time WebSockets state updates feed</div>
               </div>
             </motion.div>
           )}
@@ -846,7 +846,7 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="space-y-2 text-[9px] leading-relaxed text-text-muted">
-                <div>[React Client] <span className="text-white">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â(HTTP/WS)ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢</span> [Caddy Proxy]</div>
+                <div>[React Client] <span className="text-white">←(HTTP/WS)→</span> [Caddy Proxy]</div>
                 <div className="pl-4 text-accent">|__ [FastAPI Router] (AWS EC2 Compute)</div>
                 <div className="pl-8 text-accent">|__ [MongoDB Atlas Cluster] (Database)</div>
               </div>
@@ -898,13 +898,13 @@ const VisualForgeAI = React.memo(function VisualForgeAI({ step, active }: Visual
               </div>
               <div className="h-[1px] bg-white/5 w-full" />
               <div className="text-[9px] leading-relaxed font-mono">
-                <div className="text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ src/</div>
-                <div className="pl-3 text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ client/</div>
-                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ page.tsx</div>
-                <div className="pl-3 text-accent font-bold">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ api/</div>
-                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ main.py</div>
-                <div className="pl-6 text-text-secondary">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ models.py</div>
-                <div className="text-text-muted">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ docker-compose.yml</div>
+                <div className="text-accent font-bold">📂 src/</div>
+                <div className="pl-3 text-accent font-bold">📂 client/</div>
+                <div className="pl-6 text-text-secondary">📄 page.tsx</div>
+                <div className="pl-3 text-accent font-bold">📂 api/</div>
+                <div className="pl-6 text-text-secondary">📄 main.py</div>
+                <div className="pl-6 text-text-secondary">📄 models.py</div>
+                <div className="text-text-muted">📄 docker-compose.yml</div>
               </div>
             </motion.div>
           )}
