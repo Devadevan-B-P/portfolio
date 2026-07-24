@@ -26,7 +26,6 @@ import {
 import { projects, education, profile, chapters, principles, ChapterId } from "@/lib/data";
 import { useJourneyProgress } from "@/lib/useJourneyProgress";
 import SpotlightCard from "./SpotlightCard";
-import PixelBlast from "./PixelBlast";
 
 interface VisualProps {
   active: boolean;
@@ -98,18 +97,22 @@ Best regards,
   const pathLength = useTransform(scrollYProgress, [0, 0.97], [0, 1]);
 
   // Cinematic "Final Scene" Fadeout of surrounding UI elements:
-  // As scroll progress goes past 0.96 to 0.98, the timeline bars, sidebars, and bezel outlines dissolve to 0 opacity.
-  const uiOpacity = useTransform(scrollYProgress, [0.96, 0.98], [1, 0]);
+  // As scroll progress enters stage 08, the left sticky visualizer dissolves to 0 opacity.
+  const uiOpacity = useTransform(scrollYProgress, [0.93, 0.97], [1, 0]);
 
   return (
     <div ref={containerRef} className={`relative bg-bg-primary ${isDesktop ? "min-h-[850vh]" : "min-h-0"}`}>
       
       {/* DESKTOP VIEW */}
       {isDesktop ? (
-        <div className="flex">
-        
-        {/* Left Side: Sticky Visualizer */}
-        <div className="sticky top-0 flex h-screen w-[45%] items-center justify-center border-r border-border-subtle p-12 overflow-hidden bg-bg-primary">
+        <>
+          <div className="flex">
+          
+          {/* Left Side: Sticky Visualizer */}
+          <motion.div 
+            style={{ opacity: uiOpacity }}
+            className="sticky top-0 flex h-screen w-[45%] items-center justify-center border-r border-border-subtle p-12 overflow-hidden bg-bg-primary"
+          >
           
           {/* Timeline Node Sidebar (Fades out in final credits stage) */}
           <motion.div 
@@ -206,7 +209,7 @@ Best regards,
               <span>RENDER: GPU_ACCELERATED</span>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Side: Scrollable Story Content */}
         <div className="w-[55%] px-16 lg:px-24">
@@ -411,13 +414,60 @@ Best regards,
               ))}
             </div>
           </section>
-
-          {/* Stage 8: Final Scene */}
-          <section id="contact" className="min-h-[160vh] flex flex-col justify-center py-[20vh]">
-            {/* Right column intentionally empty - PixelBlast lives in left sticky panel */}
-          </section>
         </div>
       </div>
+
+      {/* Stage 8: Full-Width Contact Section at the end */}
+      <section id="contact" className="min-h-screen w-full relative flex flex-col justify-center items-center py-20 px-6 md:px-12 lg:px-16 bg-bg-primary overflow-hidden border-t border-white/5">
+        <div className="relative w-full max-w-6xl min-h-[80vh] rounded-card border border-border-subtle bg-surface/10 overflow-hidden shadow-layered backdrop-blur-sm flex flex-col items-center justify-center text-center p-8 lg:p-16">
+          {/* Foreground content overlay - clean background, animation removed */}
+          <div className="relative z-10 flex flex-col items-center max-w-xl">
+            <span className="mono-tag text-xs uppercase tracking-[0.2em] text-accent mb-4">
+              08 // Contact
+            </span>
+
+            <h2 className="font-display text-4xl lg:text-6xl font-bold tracking-tight text-white mb-4">
+              Let&apos;s Build The Next One.
+            </h2>
+
+            <p className="font-body text-xs lg:text-base text-text-secondary mb-10 max-w-md leading-relaxed">
+              Open to engineering roles, collaborations, and challenging software puzzles.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto text-xs font-semibold">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleEmail();
+                }}
+                className="glass-strong hover:bg-accent hover:text-black px-8 py-3.5 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.03] flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Mail className="h-4 w-4" /> Email Me
+              </a>
+
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass px-6 py-3.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.03] flex items-center justify-center gap-2"
+              >
+                <Github className="h-4 w-4" /> GitHub
+              </a>
+
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass px-6 py-3.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.03] flex items-center justify-center gap-2"
+              >
+                <Linkedin className="h-4 w-4" /> LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      </>
       ) : (
         /* MOBILE VIEW (Simplified vertical timeline) */
         <div className="px-6 py-20 flex flex-col gap-16 relative">
@@ -1161,97 +1211,7 @@ const VisualLessons = React.memo(function VisualLessons({ active }: VisualProps)
 });
 
 
-// 8. Final Scene — PixelBlast fills the left panel, contact card floats on top
-const VisualFinal = React.memo(function VisualFinal({ active, onEmailClick }: VisualProps) {
-  if (!active) return null;
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 12 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } }
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8 }}
-      className="relative w-full h-full"
-    >
-      {/* PixelBlast fills entire left panel */}
-      <div className="absolute inset-0">
-        <PixelBlast
-          variant="circle"
-          pixelSize={6}
-          color="#B497CF"
-          patternScale={3}
-          patternDensity={1.2}
-          pixelSizeJitter={0.5}
-          enableRipples
-          rippleSpeed={0.4}
-          rippleThickness={0.12}
-          rippleIntensityScale={1.5}
-          liquid
-          liquidStrength={0.12}
-          liquidRadius={1.2}
-          liquidWobbleSpeed={5}
-          speed={0.6}
-          edgeFade={0.25}
-          transparent
-        />
-      </div>
-
-      {/* Contact card floats on top of the animation */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
-        }}
-        className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10"
-      >
-        <motion.h3
-          variants={itemVariants}
-          className="font-display text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3 drop-shadow-lg"
-        >
-          Let&apos;s Build The Next One.
-        </motion.h3>
-
-        <motion.p
-          variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 0.7, y: 0, transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] as any } } }}
-          className="font-body text-xs text-text-secondary mb-10 max-w-xs leading-relaxed"
-        >
-          Open to engineering roles, collaborations, and challenging software puzzles.
-        </motion.p>
-
-        <motion.div
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
-          className="flex flex-col gap-2.5 w-48 text-xs font-semibold"
-        >
-          <motion.a
-            variants={itemVariants}
-            href="#"
-            onClick={(e) => { e.preventDefault(); if (onEmailClick) onEmailClick(null as any); }}
-            className="glass-strong hover:bg-accent hover:text-black py-3 rounded-pill text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <Mail className="h-4 w-4" /> Email Me
-          </motion.a>
-
-          <motion.div className="flex gap-2" variants={itemVariants}>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer"
-              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
-            >
-              <Github className="h-3.5 w-3.5" /> GitHub
-            </a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer"
-              className="flex-1 glass py-2.5 rounded-pill text-text-secondary hover:text-white transition-[background-color,color,transform] duration-300 ease-cinematic hover:scale-[1.02] flex items-center justify-center gap-1.5"
-            >
-              <Linkedin className="h-3.5 w-3.5" /> LinkedIn
-            </a>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-    </motion.div>
-  );
+// 8. Final Scene Visualizer
+const VisualFinal = React.memo(function VisualFinal({ active }: VisualProps) {
+  return null;
 });
