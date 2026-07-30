@@ -52,10 +52,11 @@ export default function PageTransitionProvider({ children }: { children: React.R
       <motion.div
         animate={{
           scale: isTransitioning ? 0.95 : 1,
-          filter: isTransitioning ? "blur(6px)" : "blur(0px)",
+          opacity: isTransitioning ? 0.85 : 1,
         }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="min-h-screen origin-center bg-black"
+        style={!isTransitioning ? { transform: "none", filter: "none" } : undefined}
       >
         {children}
       </motion.div>

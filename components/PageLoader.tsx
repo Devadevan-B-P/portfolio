@@ -63,7 +63,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           initial={{ y: "0%" }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.9, ease: [0.85, 0, 0.15, 1] }} // Heavy cubic-bezier split slide-up
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black select-none"
+          className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-black select-none"
         >
           {/* Subtle noise grid overlay */}
           <div className="absolute inset-0 noise-layer opacity-[0.015]" />
