@@ -635,10 +635,16 @@ export default function EngineeringJourney() {
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
               <button
-                onClick={() => triggerTransition("/engineering-archive")}
-                className="glass-strong bg-white/5 border border-accent/40 px-8 py-4 rounded-pill text-white text-xs uppercase tracking-wider font-semibold hover:bg-accent hover:text-black transition-all duration-300 hover:scale-[1.03] cursor-pointer shadow-glow"
+                onClick={() => triggerTransition("/contact")}
+                className="glass-strong bg-accent/20 border border-accent/60 px-8 py-4 rounded-pill text-white text-xs uppercase tracking-wider font-semibold hover:bg-accent hover:text-black transition-all duration-300 hover:scale-[1.03] cursor-pointer shadow-glow"
               >
-                Explore My Engineering Work
+                Get In Touch
+              </button>
+              <button
+                onClick={() => triggerTransition("/engineering-archive")}
+                className="glass-strong bg-white/5 border border-white/10 px-8 py-4 rounded-pill text-white text-xs uppercase tracking-wider font-semibold hover:bg-white/10 transition-all duration-300 hover:scale-[1.03] cursor-pointer"
+              >
+                Explore Archive
               </button>
             </div>
 

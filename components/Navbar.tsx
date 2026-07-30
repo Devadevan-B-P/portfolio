@@ -10,7 +10,7 @@ import { usePageTransition } from "./PageTransition";
 const links = [
   { label: "Journey", href: "/#journey" },
   { label: "Archive", href: "/engineering-archive" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
