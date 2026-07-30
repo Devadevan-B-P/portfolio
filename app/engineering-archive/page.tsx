@@ -213,34 +213,6 @@ export default function EngineeringArchive() {
               </SpotlightCard>
             </section>
 
-            {/* Lab Sandbox Summary Card */}
-            <section className="space-y-6">
-              <div className="flex items-center gap-2 mb-6">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                <h2 className="font-display text-xl font-bold uppercase tracking-wider text-white">
-                  Developer Sandbox
-                </h2>
-              </div>
-
-              <SpotlightCard className="p-5 border border-white/5 bg-white/[0.005] flex flex-col justify-between h-44">
-                <div>
-                  <div className="flex items-center gap-2 text-white mb-2">
-                    <Terminal className="h-4 w-4 text-accent" />
-                    <span className="font-display text-sm font-semibold uppercase">The Lab</span>
-                  </div>
-                  <p className="text-[11px] leading-relaxed text-text-secondary font-body">
-                    CUDA extension tests, ML prompt assessors, and docker network prototypes run inside active workspaces.
-                  </p>
-                </div>
-                <button
-                  onClick={() => triggerTransition("/lab")}
-                  className="w-full flex items-center justify-between text-xs font-mono text-accent hover:text-white border-t border-white/5 pt-4 transition-colors font-semibold uppercase tracking-wider cursor-pointer"
-                >
-                  Enter Developer Lab <ArrowRight className="h-3.5 w-3.5" />
-                </button>
-              </SpotlightCard>
-            </section>
-
           </div>
         </div>
       </main>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, animate } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-let hasLoadedGlobal = false;
+export let hasLoadedGlobal = false;
 
 interface PageLoaderProps {
   onComplete: () => void;
@@ -25,14 +25,21 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       (window as any).lenis.stop();
     }
 
-    // 2. High-performance requestAnimationFrame animate from 0 to 100
-    const controls = animate(0, 100, {
-      duration: 2.2,
-      ease: [0.25, 1, 0.5, 1], // Cubic-bezier OutQuart for clean deceleration deceleration
-      onUpdate: (value) => {
-        setProgress(Math.floor(value));
-      },
-      onComplete: () => {
+    // 2. High-performance requestAnimationFrame timer
+    let start: number | null = null;
+    const duration = 1800; // 1.8 seconds loading screen
+    let rafId: number;
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const percent = Math.min(Math.floor((elapsed / duration) * 100), 100);
+      
+      setProgress(percent);
+
+      if (elapsed < duration) {
+        rafId = requestAnimationFrame(step);
+      } else {
         hasLoadedGlobal = true;
         setTimeout(() => {
           setIsDone(true);
@@ -41,13 +48,15 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           if ((window as any).lenis) {
             (window as any).lenis.start();
           }
-          setTimeout(onComplete, 850); // Delay calling completion until slide exit finishes
-        }, 400);
+          setTimeout(onComplete, 850); // Delay completion trigger until slide exit finishes
+        }, 300);
       }
-    });
+    };
+
+    rafId = requestAnimationFrame(step);
 
     return () => {
-      controls.stop();
+      cancelAnimationFrame(rafId);
       document.body.style.overflow = "";
       if ((window as any).lenis) {
         (window as any).lenis.start();
@@ -62,7 +71,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           initial={{ y: "0%" }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.9, ease: [0.85, 0, 0.15, 1] }} // Heavy cubic-bezier split slide-up
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] select-none"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black select-none"
         >
           {/* Subtle noise grid overlay */}
           <div className="absolute inset-0 noise-layer opacity-[0.015]" />
@@ -94,7 +103,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
             {/* Bottom status metadata */}
             <div className="flex justify-between text-[8px] uppercase tracking-[0.2em] text-text-muted font-mono mono-tag">
               <span>SYS_INGEST: ACTIVE</span>
-              <span>STABLE_v1.0</span>
+              <span>STABLE_v2.0</span>
             </div>
           </div>
         </motion.div>

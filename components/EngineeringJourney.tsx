@@ -332,6 +332,7 @@ export default function EngineeringJourney() {
                   title="User Requirement Ingest" 
                   active={activeForgeSection === "requirement"}
                   onClick={() => setActiveForgeSection("requirement")}
+                  onMouseEnter={() => setActiveForgeSection("requirement")}
                 >
                   <p className="text-xs leading-relaxed text-text-secondary font-mono mb-2">
                     INPUT QUERY:
@@ -346,6 +347,7 @@ export default function EngineeringJourney() {
                   title="Product Requirements Document (PRD)" 
                   active={activeForgeSection === "prd"}
                   onClick={() => setActiveForgeSection("prd")}
+                  onMouseEnter={() => setActiveForgeSection("prd")}
                 >
                   <div className="text-[10px] leading-relaxed font-mono space-y-2 text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded h-40 overflow-y-auto">
                     <p className="text-white font-semibold">1. SYSTEM FUNCTIONAL REQUIREMENTS</p>
@@ -363,6 +365,7 @@ export default function EngineeringJourney() {
                   title="System Architecture Diagram" 
                   active={activeForgeSection === "architecture"}
                   onClick={() => setActiveForgeSection("architecture")}
+                  onMouseEnter={() => setActiveForgeSection("architecture")}
                 >
                   <div className="text-[10px] leading-relaxed font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded space-y-1.5">
                     <div><span className="text-accent font-semibold">NEXT.JS CLIENT</span>: Sends draw events via Socket.io.</div>
@@ -378,6 +381,7 @@ export default function EngineeringJourney() {
                   title="Tech Stack Integration" 
                   active={activeForgeSection === "techstack"}
                   onClick={() => setActiveForgeSection("techstack")}
+                  onMouseEnter={() => setActiveForgeSection("techstack")}
                 >
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded">
                     <div>• Next.js Client Engine</div>
@@ -394,6 +398,7 @@ export default function EngineeringJourney() {
                   title="Code Folder Structure Layout" 
                   active={activeForgeSection === "folders"}
                   onClick={() => setActiveForgeSection("folders")}
+                  onMouseEnter={() => setActiveForgeSection("folders")}
                 >
                   <pre className="text-[9px] leading-normal text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded font-mono h-40 overflow-y-auto">
 {`collaborative-whiteboard/
@@ -421,6 +426,7 @@ export default function EngineeringJourney() {
                   title="AWS DevOps Deployment Plan" 
                   active={activeForgeSection === "deployment"}
                   onClick={() => setActiveForgeSection("deployment")}
+                  onMouseEnter={() => setActiveForgeSection("deployment")}
                 >
                   <div className="text-[10px] leading-relaxed font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded space-y-1.5">
                     <div>1. Launch AWS EC2 node with micro computing limits.</div>
@@ -436,6 +442,7 @@ export default function EngineeringJourney() {
                   title="Interactive Agent Topology Diagram" 
                   active={activeForgeSection === "live-diagram"}
                   onClick={() => setActiveForgeSection("live-diagram")}
+                  onMouseEnter={() => setActiveForgeSection("live-diagram")}
                 >
                   <p className="text-[10px] font-mono leading-relaxed text-text-secondary">
                     Review the system layout details in the visual canvas on the left. Interact directly with nodes to display detailed routing descriptions and logs.
@@ -765,19 +772,40 @@ function SidebarDot({
   label: string;
   onClick: () => void;
 }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <button 
-      onClick={onClick}
-      className={`h-7 w-7 rounded-full flex items-center justify-center border transition-all duration-500 bg-black pointer-events-auto hover:border-accent/80 focus-visible:outline-none ${
-        active 
-          ? "border-accent text-accent shadow-[0_0_10px_rgba(79,140,255,0.4)] scale-110" 
-          : "border-white/10 text-text-muted"
-      }`}
-      role="button"
-      aria-label={`Scroll to ${label}`}
-    >
-      <Icon className="h-3.5 w-3.5" />
-    </button>
+    <div className="relative flex items-center justify-center">
+      {/* Tooltip Label */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.25 }}
+            className="absolute right-9 px-2.5 py-1 rounded bg-black/90 border border-white/10 text-[8px] font-mono uppercase tracking-widest text-accent pointer-events-none whitespace-nowrap z-50 shadow-layered"
+          >
+            {label}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <button 
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={`h-7 w-7 rounded-full flex items-center justify-center border transition-all duration-500 bg-black pointer-events-auto hover:border-accent/80 focus-visible:outline-none ${
+          active 
+            ? "border-accent text-accent shadow-[0_0_10px_rgba(79,140,255,0.4)] scale-110" 
+            : "border-white/10 text-text-muted"
+        }`}
+        role="button"
+        aria-label={`Scroll to ${label}`}
+      >
+        <Icon className="h-3.5 w-3.5" />
+      </button>
+    </div>
   );
 }
 
@@ -828,18 +856,21 @@ function ForgeAccordionItem({
   title, 
   active, 
   onClick, 
+  onMouseEnter, // Added
   children 
 }: { 
   id: string; 
   title: string; 
   active: boolean; 
   onClick: () => void; 
+  onMouseEnter?: () => void; // Added
   children: React.ReactNode 
 }) {
   return (
     <div className="border border-white/5 rounded-card overflow-hidden bg-white/[0.005]">
       <button
         onClick={onClick}
+        onMouseEnter={onMouseEnter} // Added
         className="w-full px-5 py-4 flex items-center justify-between text-left font-display text-xs font-semibold text-white hover:bg-white/[0.015] transition-colors focus-visible:outline-none"
         aria-expanded={active}
       >
@@ -926,6 +957,7 @@ const VisualProblem = React.memo(function VisualProblem({ active }: VisualProps)
               key={idx} 
               className="cursor-pointer"
               onClick={() => handleNodeClick(idx)}
+              onMouseEnter={() => handleNodeClick(idx)}
             >
               <circle
                 cx={n.cx}
@@ -988,6 +1020,7 @@ const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualPr
       <div className="grid grid-cols-3 gap-4 w-72 text-center text-[10px] font-mono text-text-secondary z-10">
         <button 
           onClick={() => setSelected("client")}
+          onMouseEnter={() => setSelected("client")}
           className={`border rounded-btn px-2 py-4 transition-all ${
             selected === "client" 
               ? "border-accent bg-accent/5 text-white" 
@@ -1000,6 +1033,7 @@ const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualPr
         
         <button 
           onClick={() => setSelected("gateway")}
+          onMouseEnter={() => setSelected("gateway")}
           className={`border rounded-btn px-2 py-4 transition-all ${
             selected === "gateway" 
               ? "border-accent bg-accent/5 text-white" 
@@ -1012,6 +1046,7 @@ const VisualBlueprint = React.memo(function VisualBlueprint({ active }: VisualPr
 
         <button 
           onClick={() => setSelected("database")}
+          onMouseEnter={() => setSelected("database")}
           className={`border rounded-btn px-2 py-4 transition-all ${
             selected === "database" 
               ? "border-accent bg-accent/5 text-white" 
@@ -1147,6 +1182,7 @@ const VisualSystems = React.memo(function VisualSystems({ active }: VisualProps)
       <div className="flex gap-2 mb-4 bg-white/[0.02] border border-white/5 rounded-pill p-1">
         <button 
           onClick={() => setViewMode("postgres")}
+          onMouseEnter={() => setViewMode("postgres")}
           className={`px-3 py-1 rounded-pill text-[8px] uppercase tracking-wider font-semibold ${
             viewMode === "postgres" ? "bg-accent text-black font-bold" : "text-text-secondary hover:text-white"
           }`}
@@ -1155,6 +1191,7 @@ const VisualSystems = React.memo(function VisualSystems({ active }: VisualProps)
         </button>
         <button 
           onClick={() => setViewMode("redis")}
+          onMouseEnter={() => setViewMode("redis")}
           className={`px-3 py-1 rounded-pill text-[8px] uppercase tracking-wider font-semibold ${
             viewMode === "redis" ? "bg-accent text-black font-bold" : "text-text-secondary hover:text-white"
           }`}

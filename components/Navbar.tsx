@@ -9,9 +9,7 @@ import { usePageTransition } from "./PageTransition";
 
 const links = [
   { label: "Journey", href: "/#journey" },
-  { label: "Forge AI", href: "/#forge-ai" },
   { label: "Archive", href: "/engineering-archive" },
-  { label: "Lab", href: "/lab" },
   { label: "Contact", href: "/#contact" },
 ];
 
