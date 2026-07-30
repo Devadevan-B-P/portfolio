@@ -27,6 +27,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+import PageTransitionProvider from "@/components/PageTransition";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,7 +44,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
+        <PageTransitionProvider>
+          {children}
+        </PageTransitionProvider>
         <Analytics />
       </body>
     </html>

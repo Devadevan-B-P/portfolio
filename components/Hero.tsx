@@ -10,11 +10,14 @@ import SpotlightCard from "./SpotlightCard";
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
 export default function Hero({ startAnimation = true }: { startAnimation?: boolean }) {
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   
   // Dissolve effect on scroll: fade out and slide up slightly
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
   const y = useTransform(scrollY, [0, 500], [0, -40]);
+
+  // Line drawing length based on early scroll
+  const lineLength = useTransform(scrollYProgress, [0, 0.05], [0, 1]);
 
   const headingWords = profile.headline.split(" ");
 
@@ -33,7 +36,7 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pt-32 md:px-12 bg-[#050505]"
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pt-32 md:px-12 bg-black"
     >
       {/* Background loop video fades out on scroll */}
       <HeroVideo />
@@ -46,37 +49,40 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
           initial={{ opacity: 0, y: 12 }}
           animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
           transition={{ duration: 0.8, ease, delay: 0.1 }}
-          className="mb-8 flex items-center gap-3"
+          className="mb-6 flex items-center gap-3"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
-          <span className="mono-tag text-xs uppercase tracking-[0.25em] text-text-secondary">
-            {profile.name} · {profile.role}
+          <span className="mono-tag text-[10px] md:text-xs uppercase tracking-[0.3em] text-accent font-semibold">
+            {profile.name} // {profile.role}
           </span>
         </motion.div>
 
         {/* Large Cinematic Headline with blur-to-sharp fade in */}
-        <h1 className="font-display font-bold leading-[1.0] tracking-tight text-white mb-6 select-none text-[36px] sm:text-[48px] md:text-[72px] lg:text-[90px] max-w-4xl text-center">
-          {headingWords.map((word, i) => (
-            <motion.span
-              key={`${word}-${i}`}
-              initial={{ filter: "blur(12px)", opacity: 0, y: 30 }}
-              animate={startAnimation ? { filter: "blur(0px)", opacity: 1, y: 0 } : { filter: "blur(12px)", opacity: 0, y: 30 }}
-              transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.12 }}
-              className="inline-block mx-2 text-gradient"
-            >
-              {word}
-            </motion.span>
-          ))}
+        <h1 className="font-display font-extrabold leading-[1.05] tracking-tight text-white mb-6 select-none text-[38px] sm:text-[52px] md:text-[76px] lg:text-[96px] max-w-4xl text-center">
+          {headingWords.map((word, i) => {
+            const isHighlight = word.toLowerCase().includes("think") || word.toLowerCase().includes("ship");
+            return (
+              <motion.span
+                key={`${word}-${i}`}
+                initial={{ filter: "blur(12px)", opacity: 0, y: 30 }}
+                animate={startAnimation ? { filter: "blur(0px)", opacity: 1, y: 0 } : { filter: "blur(12px)", opacity: 0, y: 30 }}
+                transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.12 }}
+                className={`inline-block mx-2 ${isHighlight ? "text-accent drop-shadow-[0_0_20px_rgba(79,140,255,0.25)]" : "text-gradient"}`}
+              >
+                {word}
+              </motion.span>
+            );
+          })}
         </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.9, ease, delay: 1.0 }}
-          className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-text-secondary md:text-base text-center"
+          className="mt-6 max-w-2xl font-body text-xs md:text-sm leading-relaxed text-text-secondary tracking-wide text-center"
         >
           {profile.summary}
         </motion.p>
@@ -93,7 +99,7 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
             onClick={(e) => handleScroll(e, "#journey")}
             className="group relative focus-visible:outline-none"
           >
-            <SpotlightCard className="rounded-pill border border-border-subtle bg-white/[0.01] px-8 py-4 font-body text-xs uppercase tracking-wider font-semibold text-white transition-all duration-300 hover:border-accent/40 shadow-glow">
+            <SpotlightCard className="rounded-pill border border-border-subtle bg-white/[0.01] px-8 py-4 font-body text-[10px] md:text-xs uppercase tracking-wider font-semibold text-white transition-all duration-300 hover:border-accent/40 shadow-glow">
               <span className="flex items-center gap-2">
                 Enter Journey
                 <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -123,6 +129,27 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
           </div>
         </div>
       </motion.div>
+
+      {/* Connector SVG emerging naturally from Hero bottom */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-24 overflow-visible z-20 pointer-events-none hidden md:block">
+        <svg className="w-full h-full overflow-visible" fill="none">
+          <motion.path
+            d="M 4 0 V 96"
+            stroke="#4f8cff"
+            strokeWidth="1.5"
+            style={{ pathLength: lineLength }}
+            strokeDasharray="4 2"
+          />
+          <motion.circle
+            cx="4"
+            cy="0"
+            r="3"
+            fill="#4f8cff"
+            style={{ y: useTransform(lineLength, [0, 1], [0, 96]) }}
+            className="shadow-[0_0_8px_#4f8cff]"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

@@ -1,17 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "@/lib/data";
+import { usePageTransition } from "./PageTransition";
 
 const links = [
-  { label: "Journey", href: "#journey" },
-  { label: "Contact", href: "#contact" },
+  { label: "Journey", href: "/#journey" },
+  { label: "Forge AI", href: "/#forge-ai" },
+  { label: "Archive", href: "/engineering-archive" },
+  { label: "Lab", href: "/lab" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const { triggerTransition } = usePageTransition();
 
   // Lock body scroll and pause Lenis scroll when mobile menu is open
   useEffect(() => {
@@ -34,15 +41,31 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(href);
-    } else {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+    setIsOpen(false);
+
+    const isHashLink = href.startsWith("/#") || href.startsWith("#");
+    const hash = href.includes("#") ? href.substring(href.indexOf("#")) : "";
+
+    if (isHashLink) {
+      if (pathname === "/") {
+        // Already on home, scroll directly
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo(hash);
+        } else {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      } else {
+        // Navigate back to homepage and scroll
+        triggerTransition("/" + hash);
       }
+    } else {
+      // Navigate to a dedicated subpage
+      triggerTransition(href);
     }
   };
 
@@ -55,8 +78,8 @@ export default function Navbar() {
         className="fixed top-6 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 pointer-events-none"
       >
         <a
-          href="#top"
-          onClick={(e) => handleScroll(e, "#top")}
+          href="/#top"
+          onClick={(e) => handleLinkClick(e, "/#top")}
           className="glass flex h-10 w-10 items-center justify-center rounded-full font-display text-sm font-semibold text-white pointer-events-auto hover:border-accent/40 transition-colors"
         >
           D.
@@ -64,22 +87,27 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="glass hidden items-center gap-1 rounded-pill px-1.5 py-1.5 md:flex pointer-events-auto">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleScroll(e, link.href)}
-              className="rounded-pill px-5 py-2 font-body text-xs uppercase tracking-wider font-semibold text-text-secondary transition-colors duration-300 hover:text-white"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) => {
+            const isActive = pathname === link.href || (link.href.startsWith("/#") && pathname === "/");
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className={`rounded-pill px-4 py-2 font-body text-[11px] uppercase tracking-wider font-semibold transition-colors duration-300 ${
+                  isActive ? "text-accent bg-white/[0.03]" : "text-text-secondary hover:text-white"
+                }`}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Desktop Resume */}
         <a
-          href="/Devadevan_B_P_Resume.pdf"
-          download
+          href="/resume"
+          onClick={(e) => handleLinkClick(e, "/resume")}
           className="glass-strong group hidden md:flex items-center gap-1.5 rounded-pill px-6 py-2.5 font-body text-xs uppercase tracking-wider font-semibold text-white transition-transform duration-300 ease-cinematic hover:scale-[1.03] pointer-events-auto"
         >
           Résumé
@@ -121,10 +149,7 @@ export default function Navbar() {
                 <motion.a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => {
-                    setIsOpen(false);
-                    handleScroll(e, link.href);
-                  }}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
@@ -135,9 +160,8 @@ export default function Navbar() {
               ))}
               <div className="my-2 border-t border-white/5" />
               <motion.a
-                href="/Devadevan_B_P_Resume.pdf"
-                download
-                onClick={() => setIsOpen(false)}
+                href="/resume"
+                onClick={(e) => handleLinkClick(e, "/resume")}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: links.length * 0.05 }}

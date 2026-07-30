@@ -130,11 +130,11 @@ export default function CustomCursor() {
     <>
       <div
         ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+        className="pointer-events-none fixed left-0 top-0 z-[999999] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
       />
       <div
         ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 transition-[border-color,background-color] duration-300 ease-out"
+        className="pointer-events-none fixed left-0 top-0 z-[999999] h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 transition-[border-color,background-color] duration-300 ease-out"
       />
     </>
   );

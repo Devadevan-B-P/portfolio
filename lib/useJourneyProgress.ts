@@ -44,7 +44,7 @@ export function useJourneyProgress(scrollYProgress: MotionValue<number>): Journe
         setActiveChapter(matchingChapter.id);
 
         // Map sub-steps specifically for the Forge AI engine chapter
-        if (matchingChapter.id === "engine") {
+        if (matchingChapter.id === "forge-ai") {
           const [start, end] = matchingChapter.range;
           const subProgress = (latest - start) / (end - start);
           

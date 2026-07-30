@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import EngineeringJourney from "@/components/EngineeringJourney";
@@ -11,9 +10,26 @@ import PageLoader from "@/components/PageLoader";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    if (!isLoading && typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash) {
+        setTimeout(() => {
+          if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(hash);
+          } else {
+            const element = document.querySelector(hash);
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth" });
+            }
+          }
+        }, 300);
+      }
+    }
+  }, [isLoading]);
+
   return (
     <SmoothScroll>
-      <CustomCursor />
       <PageLoader onComplete={() => setIsLoading(false)} />
       <div className="noise-layer" />
       <Navbar />
