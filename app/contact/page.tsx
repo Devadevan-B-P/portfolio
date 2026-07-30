@@ -23,10 +23,10 @@ import {
 export default function ContactPage() {
   const { triggerTransition } = usePageTransition();
   const [copied, setCopied] = useState(false);
-  const [inquiryType, setInquiryType] = useState<string>("Full-Stack AI");
   const [formState, setFormState] = useState({
     name: "",
     email: "",
+    subject: "",
     message: ""
   });
   const [submitting, setSubmitting] = useState(false);
@@ -40,24 +40,15 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formState.email || !formState.message) return;
+    if (!formState.email || !formState.message || !formState.subject) return;
     setSubmitting(true);
 
     // Simulate transmission delay for realistic HUD feedback
     setTimeout(() => {
       setSubmitting(false);
       setSubmitted(true);
-      setFormState({ name: "", email: "", message: "" });
     }, 1200);
   };
-
-  const projectCategories = [
-    "Full-Stack AI",
-    "Autonomous Agents",
-    "Edge ML & Vision",
-    "System Architecture",
-    "Other Inquiry"
-  ];
 
   return (
     <SmoothScroll>
@@ -220,10 +211,13 @@ export default function ContactPage() {
                     Transmission Received
                   </h3>
                   <p className="font-body text-xs text-text-secondary max-w-sm leading-relaxed">
-                    Thank you for reaching out. Your inquiry regarding <span className="text-accent font-semibold">{inquiryType}</span> has been logged. I will respond within 24 hours.
+                    Thank you for reaching out. Your inquiry regarding <span className="text-accent font-semibold">{formState.subject || "your project"}</span> has been logged. I will respond within 24 hours.
                   </p>
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormState({ name: "", email: "", subject: "", message: "" });
+                    }}
                     className="mt-4 font-mono text-xs uppercase tracking-wider text-accent underline cursor-pointer hover:text-white transition-colors"
                   >
                     Send Another Message
@@ -232,27 +226,19 @@ export default function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   
-                  {/* Select Category */}
+                  {/* Subject Input */}
                   <div>
-                    <label className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block mb-2.5">
-                      Select Inquiry Scope
+                    <label className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block mb-2">
+                      Subject *
                     </label>
-                    <div className="flex flex-wrap gap-2">
-                      {projectCategories.map((cat) => (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() => setInquiryType(cat)}
-                          className={`font-mono text-[10px] uppercase tracking-wider px-3.5 py-1.5 rounded-pill border transition-all cursor-pointer ${
-                            inquiryType === cat
-                              ? "border-accent bg-accent/15 text-white font-bold shadow-[0_0_10px_rgba(79,140,255,0.2)]"
-                              : "border-white/10 bg-white/[0.02] text-text-secondary hover:border-white/30 hover:text-white"
-                          }`}
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Full-Stack AI Project / Architecture Consultation"
+                      value={formState.subject}
+                      onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                      className="w-full bg-black/60 border border-white/10 rounded-btn px-4 py-3 font-body text-xs text-white placeholder-white/20 focus:border-accent focus:outline-none transition-colors"
+                    />
                   </div>
 
                   {/* Name & Email Row */}
