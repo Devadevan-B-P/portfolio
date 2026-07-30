@@ -5,10 +5,10 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import EngineeringJourney from "@/components/EngineeringJourney";
-import PageLoader, { hasLoadedGlobal } from "@/components/PageLoader";
+import PageLoader from "@/components/PageLoader";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(!hasLoadedGlobal);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isLoading && typeof window !== "undefined") {

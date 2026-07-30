@@ -100,17 +100,24 @@ export default function EngineeringJourney() {
   // Cinematic "Final Scene" Fadeout of surrounding UI elements:
   const uiOpacity = useTransform(scrollYProgress, [0.93, 0.96], [1, 0]);
 
+  const [isManualForge, setIsManualForge] = useState(false);
+
   // Sync scroll progress to active forge-ai section automatically if user hasn't selected manually
   useEffect(() => {
     if (activeChapter === "forge-ai") {
-      // Divide the chapter scroll progress range [0.25, 0.58] into sub-steps
-      const stepIndex = Math.min(Math.floor((progress - 0.25) / (0.33 / 7)), 6);
-      const sections = ["requirement", "prd", "architecture", "techstack", "folders", "deployment", "live-diagram"];
-      if (sections[stepIndex]) {
-        setActiveForgeSection(sections[stepIndex]);
+      if (!isManualForge) {
+        // Divide the chapter scroll progress range [0.25, 0.58] into sub-steps
+        const stepIndex = Math.min(Math.floor((progress - 0.25) / (0.33 / 7)), 6);
+        const sections = ["requirement", "prd", "architecture", "techstack", "folders", "deployment", "live-diagram"];
+        if (sections[stepIndex] && activeForgeSection !== sections[stepIndex]) {
+          setActiveForgeSection(sections[stepIndex]);
+        }
       }
+    } else {
+      setIsManualForge(false);
+      setActiveForgeSection("requirement");
     }
-  }, [progress, activeChapter]);
+  }, [progress, activeChapter, isManualForge, activeForgeSection]);
 
   return (
     <div ref={containerRef} className={`relative bg-black ${isDesktop ? "min-h-[850vh]" : "min-h-0"}`}>
@@ -227,28 +234,42 @@ export default function EngineeringJourney() {
             </motion.div>
 
             {/* Dynamic Stage Renderings */}
-            <div className="flex-1 flex items-center justify-center py-6 relative min-h-0">
-              <AnimatePresence mode="wait">
+            <div className="flex-1 w-full h-full relative min-h-0">
+              <AnimatePresence>
                 {activeChapter === "problem" && (
-                  <VisualProblem key="problem" active={activeChapter === "problem"} />
+                  <motion.div key="problem" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualProblem active={activeChapter === "problem"} />
+                  </motion.div>
                 )}
                 {activeChapter === "blueprint" && (
-                  <VisualBlueprint key="blueprint" active={activeChapter === "blueprint"} />
+                  <motion.div key="blueprint" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualBlueprint active={activeChapter === "blueprint"} />
+                  </motion.div>
                 )}
                 {activeChapter === "forge-ai" && (
-                  <VisualForgeAI key="forge-ai" activeSection={activeForgeSection} active={activeChapter === "forge-ai"} />
+                  <motion.div key="forge-ai" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualForgeAI activeSection={activeForgeSection} active={activeChapter === "forge-ai"} />
+                  </motion.div>
                 )}
                 {activeChapter === "systems" && (
-                  <VisualSystems key="systems" active={activeChapter === "systems"} />
+                  <motion.div key="systems" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualSystems active={activeChapter === "systems"} />
+                  </motion.div>
                 )}
                 {activeChapter === "edge-ai" && (
-                  <VisualEdgeAI key="edge-ai" active={activeChapter === "edge-ai"} />
+                  <motion.div key="edge-ai" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualEdgeAI active={activeChapter === "edge-ai"} />
+                  </motion.div>
                 )}
                 {activeChapter === "impact" && (
-                   <VisualImpact key="impact" active={activeChapter === "impact"} daysData={githubDays} />
-                 )}
+                  <motion.div key="impact" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualImpact active={activeChapter === "impact"} daysData={githubDays} />
+                  </motion.div>
+                )}
                 {activeChapter === "lessons-learned" && (
-                  <VisualLessons key="lessons" active={activeChapter === "lessons-learned"} />
+                  <motion.div key="lessons" className="absolute inset-0 flex items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
+                    <VisualLessons active={activeChapter === "lessons-learned"} />
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
@@ -331,8 +352,8 @@ export default function EngineeringJourney() {
                   id="requirement" 
                   title="User Requirement Ingest" 
                   active={activeForgeSection === "requirement"}
-                  onClick={() => setActiveForgeSection("requirement")}
-                  onMouseEnter={() => setActiveForgeSection("requirement")}
+                  onClick={() => { setActiveForgeSection("requirement"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("requirement"); setIsManualForge(true); }}
                 >
                   <p className="text-xs leading-relaxed text-text-secondary font-mono mb-2">
                     INPUT QUERY:
@@ -346,8 +367,8 @@ export default function EngineeringJourney() {
                   id="prd" 
                   title="Product Requirements Document (PRD)" 
                   active={activeForgeSection === "prd"}
-                  onClick={() => setActiveForgeSection("prd")}
-                  onMouseEnter={() => setActiveForgeSection("prd")}
+                  onClick={() => { setActiveForgeSection("prd"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("prd"); setIsManualForge(true); }}
                 >
                   <div className="text-[10px] leading-relaxed font-mono space-y-2 text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded h-40 overflow-y-auto">
                     <p className="text-white font-semibold">1. SYSTEM FUNCTIONAL REQUIREMENTS</p>
@@ -364,8 +385,8 @@ export default function EngineeringJourney() {
                   id="architecture" 
                   title="System Architecture Diagram" 
                   active={activeForgeSection === "architecture"}
-                  onClick={() => setActiveForgeSection("architecture")}
-                  onMouseEnter={() => setActiveForgeSection("architecture")}
+                  onClick={() => { setActiveForgeSection("architecture"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("architecture"); setIsManualForge(true); }}
                 >
                   <div className="text-[10px] leading-relaxed font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded space-y-1.5">
                     <div><span className="text-accent font-semibold">NEXT.JS CLIENT</span>: Sends draw events via Socket.io.</div>
@@ -380,8 +401,8 @@ export default function EngineeringJourney() {
                   id="techstack" 
                   title="Tech Stack Integration" 
                   active={activeForgeSection === "techstack"}
-                  onClick={() => setActiveForgeSection("techstack")}
-                  onMouseEnter={() => setActiveForgeSection("techstack")}
+                  onClick={() => { setActiveForgeSection("techstack"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("techstack"); setIsManualForge(true); }}
                 >
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded">
                     <div>• Next.js Client Engine</div>
@@ -397,8 +418,8 @@ export default function EngineeringJourney() {
                   id="folders" 
                   title="Code Folder Structure Layout" 
                   active={activeForgeSection === "folders"}
-                  onClick={() => setActiveForgeSection("folders")}
-                  onMouseEnter={() => setActiveForgeSection("folders")}
+                  onClick={() => { setActiveForgeSection("folders"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("folders"); setIsManualForge(true); }}
                 >
                   <pre className="text-[9px] leading-normal text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded font-mono h-40 overflow-y-auto">
 {`collaborative-whiteboard/
@@ -425,8 +446,8 @@ export default function EngineeringJourney() {
                   id="deployment" 
                   title="AWS DevOps Deployment Plan" 
                   active={activeForgeSection === "deployment"}
-                  onClick={() => setActiveForgeSection("deployment")}
-                  onMouseEnter={() => setActiveForgeSection("deployment")}
+                  onClick={() => { setActiveForgeSection("deployment"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("deployment"); setIsManualForge(true); }}
                 >
                   <div className="text-[10px] leading-relaxed font-mono text-text-secondary bg-white/[0.02] border border-white/5 p-3 rounded space-y-1.5">
                     <div>1. Launch AWS EC2 node with micro computing limits.</div>
@@ -441,8 +462,8 @@ export default function EngineeringJourney() {
                   id="live-diagram" 
                   title="Interactive Agent Topology Diagram" 
                   active={activeForgeSection === "live-diagram"}
-                  onClick={() => setActiveForgeSection("live-diagram")}
-                  onMouseEnter={() => setActiveForgeSection("live-diagram")}
+                  onClick={() => { setActiveForgeSection("live-diagram"); setIsManualForge(true); }}
+                  onMouseEnter={() => { setActiveForgeSection("live-diagram"); setIsManualForge(true); }}
                 >
                   <p className="text-[10px] font-mono leading-relaxed text-text-secondary">
                     Review the system layout details in the visual canvas on the left. Interact directly with nodes to display detailed routing descriptions and logs.

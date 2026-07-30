@@ -3,22 +3,15 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export let hasLoadedGlobal = false;
-
 interface PageLoaderProps {
   onComplete: () => void;
 }
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
-  const [progress, setProgress] = useState(hasLoadedGlobal ? 100 : 0);
-  const [isDone, setIsDone] = useState(hasLoadedGlobal);
+  const [progress, setProgress] = useState(0);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    if (hasLoadedGlobal) {
-      onComplete();
-      return;
-    }
-
     // 1. Lock scrolling on body and Lenis
     document.body.style.overflow = "hidden";
     if ((window as any).lenis) {
@@ -40,7 +33,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       if (elapsed < duration) {
         rafId = requestAnimationFrame(step);
       } else {
-        hasLoadedGlobal = true;
         setTimeout(() => {
           setIsDone(true);
           // 3. Unlock scroll actions on completion
