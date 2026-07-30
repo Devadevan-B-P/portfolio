@@ -131,7 +131,10 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
       </motion.div>
 
       {/* Connector SVG emerging naturally from Hero bottom */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-24 overflow-visible z-20 pointer-events-none hidden md:block">
+      <motion.div 
+        style={{ opacity }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-24 overflow-visible z-20 pointer-events-none hidden md:block"
+      >
         <svg className="w-full h-full overflow-visible" fill="none">
           <motion.path
             d="M 4 0 V 96"
@@ -149,7 +152,7 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
             className="shadow-[0_0_8px_#4f8cff]"
           />
         </svg>
-      </div>
+      </motion.div>
     </section>
   );
 }
