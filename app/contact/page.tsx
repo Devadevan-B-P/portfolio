@@ -226,21 +226,6 @@ export default function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   
-                  {/* Subject Input */}
-                  <div>
-                    <label className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block mb-2">
-                      Subject *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Full-Stack AI Project / Architecture Consultation"
-                      value={formState.subject}
-                      onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
-                      className="w-full bg-black/60 border border-white/10 rounded-btn px-4 py-3 font-body text-xs text-white placeholder-white/20 focus:border-accent focus:outline-none transition-colors"
-                    />
-                  </div>
-
                   {/* Name & Email Row */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -270,6 +255,21 @@ export default function ContactPage() {
                         className="w-full bg-black/60 border border-white/10 rounded-btn px-4 py-3 font-body text-xs text-white placeholder-white/20 focus:border-accent focus:outline-none transition-colors"
                       />
                     </div>
+                  </div>
+
+                  {/* Subject Input */}
+                  <div>
+                    <label className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block mb-2">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Full-Stack AI Project / Architecture Consultation"
+                      value={formState.subject}
+                      onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                      className="w-full bg-black/60 border border-white/10 rounded-btn px-4 py-3 font-body text-xs text-white placeholder-white/20 focus:border-accent focus:outline-none transition-colors"
+                    />
                   </div>
 
                   {/* Message Input */}
