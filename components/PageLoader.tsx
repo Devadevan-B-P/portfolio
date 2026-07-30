@@ -7,11 +7,26 @@ interface PageLoaderProps {
   onComplete: () => void;
 }
 
+export function isSessionLoaded() {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem("hasLoadedPortfolio") === "true";
+  } catch (e) {
+    return false;
+  }
+}
+
 export default function PageLoader({ onComplete }: PageLoaderProps) {
-  const [progress, setProgress] = useState(0);
-  const [isDone, setIsDone] = useState(false);
+  const [alreadyLoaded] = useState(() => isSessionLoaded());
+  const [progress, setProgress] = useState(alreadyLoaded ? 100 : 0);
+  const [isDone, setIsDone] = useState(alreadyLoaded);
 
   useEffect(() => {
+    if (alreadyLoaded) {
+      onComplete();
+      return;
+    }
+
     // 1. Lock scrolling on body and Lenis
     document.body.style.overflow = "hidden";
     if ((window as any).lenis) {
@@ -33,6 +48,10 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       if (elapsed < duration) {
         rafId = requestAnimationFrame(step);
       } else {
+        try {
+          sessionStorage.setItem("hasLoadedPortfolio", "true");
+        } catch (e) {}
+
         setTimeout(() => {
           setIsDone(true);
           // 3. Unlock scroll actions on completion
@@ -54,7 +73,9 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
         (window as any).lenis.start();
       }
     };
-  }, [onComplete]);
+  }, [onComplete, alreadyLoaded]);
+
+  if (alreadyLoaded) return null;
 
   return (
     <AnimatePresence>
