@@ -15,8 +15,31 @@ const links = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("journey");
   const pathname = usePathname();
   const { triggerTransition } = usePageTransition();
+
+  // Scroll listener to differentiate active section on homepage (Journey vs Contact)
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const handleScroll = () => {
+      const contactElem = document.getElementById("contact");
+      if (contactElem) {
+        const rect = contactElem.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.6 && rect.bottom >= 0) {
+          setActiveSection("contact");
+          return;
+        }
+      }
+      setActiveSection("journey");
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
 
   // Lock body scroll and pause Lenis scroll when mobile menu is open
   useEffect(() => {
@@ -86,7 +109,11 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <nav className="glass hidden items-center gap-1 rounded-pill px-1.5 py-1.5 md:flex pointer-events-auto">
           {links.map((link) => {
-            const isActive = pathname === link.href || (link.href.startsWith("/#") && pathname === "/");
+            const isActive = 
+              pathname === link.href ||
+              (pathname === "/" && link.href === "/#journey" && activeSection === "journey") ||
+              (pathname === "/" && link.href === "/#contact" && activeSection === "contact");
+
             return (
               <a
                 key={link.href}
@@ -143,19 +170,28 @@ export default function Navbar() {
               transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
               className="glass-strong fixed top-20 left-6 right-6 z-40 flex flex-col gap-2 rounded-card p-6 md:hidden"
             >
-              {links.map((link, idx) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="rounded-btn px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:bg-white/5 hover:text-white"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {links.map((link, idx) => {
+                const isActive = 
+                  pathname === link.href ||
+                  (pathname === "/" && link.href === "/#journey" && activeSection === "journey") ||
+                  (pathname === "/" && link.href === "/#contact" && activeSection === "contact");
+
+                return (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className={`rounded-btn px-4 py-3 font-body text-sm font-semibold uppercase tracking-wider transition-colors ${
+                      isActive ? "text-accent bg-white/5 font-bold" : "text-text-secondary hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </motion.a>
+                );
+              })}
               <div className="my-2 border-t border-white/5" />
               <motion.a
                 href="/resume"
