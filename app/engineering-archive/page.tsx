@@ -6,7 +6,7 @@ import SpotlightCard from "@/components/SpotlightCard";
 import SmoothScroll from "@/components/SmoothScroll";
 import { usePageTransition } from "@/components/PageTransition";
 import { projects, credentials } from "@/lib/data";
-import { ArrowRight, FileText, Award, ExternalLink, Github, Terminal } from "lucide-react";
+import { ArrowRight, FileText, Award, Github, Terminal } from "lucide-react";
 
 export default function EngineeringArchive() {
   const { triggerTransition } = usePageTransition();
@@ -143,7 +143,7 @@ export default function EngineeringArchive() {
                         <span className="mono-tag text-[8px] uppercase tracking-widest text-text-muted">
                           {cred.issuer}
                         </span>
-                        <div className="text-[9px] font-bold font-mono text-white mt-1 uppercase max-w-[200px] truncate">
+                        <div className="text-[9px] font-bold font-mono text-white mt-1 uppercase max-w-[280px] truncate">
                           {cred.title}
                         </div>
                       </div>
@@ -170,15 +170,6 @@ export default function EngineeringArchive() {
                           </span>
                         ))}
                       </div>
-
-                      <a 
-                        href={cred.verificationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-4 w-full flex items-center justify-center gap-1.5 px-4 py-2 border border-white/5 hover:border-accent/40 rounded text-[9px] uppercase tracking-wider font-semibold font-mono text-accent bg-white/[0.01] hover:bg-accent hover:text-black transition-colors"
-                      >
-                        Verify Credential <ExternalLink className="h-3 w-3" />
-                      </a>
                     </div>
                   </SpotlightCard>
                 ))}

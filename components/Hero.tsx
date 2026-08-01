@@ -61,7 +61,7 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
         </motion.div>
 
         {/* Large Cinematic Headline with blur-to-sharp fade in */}
-        <h1 className="font-display font-extrabold leading-[1.05] tracking-tight text-white mb-6 select-none text-[38px] sm:text-[52px] md:text-[76px] lg:text-[96px] max-w-4xl text-center">
+        <h1 className="font-display font-extrabold leading-[1.1] sm:leading-[1.05] tracking-tight text-white mb-6 select-none text-[30px] xs:text-[36px] sm:text-[52px] md:text-[76px] lg:text-[96px] max-w-4xl text-center">
           {headingWords.map((word, i) => {
             const isHighlight = word.toLowerCase().includes("think") || word.toLowerCase().includes("ship");
             return (
@@ -70,7 +70,7 @@ export default function Hero({ startAnimation = true }: { startAnimation?: boole
                 initial={{ filter: "blur(12px)", opacity: 0, y: 30 }}
                 animate={startAnimation ? { filter: "blur(0px)", opacity: 1, y: 0 } : { filter: "blur(12px)", opacity: 0, y: 30 }}
                 transition={{ duration: 1.1, ease, delay: 0.2 + i * 0.12 }}
-                className={`inline-block mx-2 ${isHighlight ? "text-accent drop-shadow-[0_0_20px_rgba(79,140,255,0.25)]" : "text-gradient"}`}
+                className={`inline-block mx-1 sm:mx-2 ${isHighlight ? "text-accent drop-shadow-[0_0_20px_rgba(79,140,255,0.25)]" : "text-gradient"}`}
               >
                 {word}
               </motion.span>

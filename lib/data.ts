@@ -196,31 +196,38 @@ export type Credential = {
   issuer: string;
   date: string;
   credentialId: string;
-  verificationUrl: string;
+  verificationUrl?: string;
   pdfPreview: string; // Used to render visual mock preview
   skillsLearned: string[];
 };
 
 export const credentials: Credential[] = [
   {
-    id: "aws-fundamentals",
-    title: "AWS Fundamentals Internship",
-    issuer: "ICT Academy of Kerala",
-    date: "2024",
-    credentialId: "ICTAK-AWS-2024-9382",
-    verificationUrl: "https://ictkerala.org/verification",
-    pdfPreview: "aws-fundamentals",
-    skillsLearned: ["EC2 Computing", "S3 Storage Pools", "IAM Security Roles", "VPC Subnetting", "RDS Database Ingest"],
+    id: "iedc-hackathon",
+    title: "IEDC District Cluster Level Hackathon",
+    issuer: "Kerala Startup Mission & IEDC",
+    date: "2026",
+    credentialId: "IE-HK-26-1065",
+    pdfPreview: "iedc-hackathon",
+    skillsLearned: ["Problem Solving", "Innovation", "Collaborative Solutioning", "IEDC Ecosystem"],
   },
   {
     id: "vertex-ai-prompting",
     title: "Prompt Design in Vertex AI",
-    issuer: "Google Cloud Skills Boost",
+    issuer: "Google Cloud",
     date: "2024",
-    credentialId: "GCP-VAI-8490-2810",
-    verificationUrl: "https://www.cloudskillsboost.google/public_profiles/devadevan",
+    credentialId: "Skill Badge • Introductory",
     pdfPreview: "vertex-ai",
-    skillsLearned: ["LLM Hyperparameter Tuning", "Few-Shot Instruction Modeling", "System Prompts Scoping", "Vertex AI Studio"],
+    skillsLearned: ["Machine Learning & AI", "LLM Hyperparameter Tuning", "Few-Shot Instruction Modeling", "Vertex AI Studio"],
+  },
+  {
+    id: "aws-fundamentals",
+    title: "AWS Fundamentals Internship",
+    issuer: "ICT Academy of Kerala",
+    date: "2025",
+    credentialId: "Grade B (1-Month Internship)",
+    pdfPreview: "aws-fundamentals",
+    skillsLearned: ["EC2 Computing", "S3 Storage Pools", "IAM Security Roles", "VPC Subnetting", "RDS Database Ingest"],
   },
 ];
 

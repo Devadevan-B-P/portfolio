@@ -1,36 +1,71 @@
-# Devadevan B P — Portfolio
+# Devadevan B P — Portfolio & Engineering Showcase
 
-A cinematic, high-performance, and responsive software engineering portfolio built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**.
+A cinematic, high-performance, and responsive software engineering portfolio built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, **Nodemailer**, and **Framer Motion**.
 
-The design language balances a sleek near-black background, custom electric-blue accents, hardware-accelerated glassmorphism surfaces, generous whitespace, and custom cubic-bezier easings.
+🌐 **Forge AI Flagship Demo**: [https://forge-ai-dev.cloud-ip.cc/](https://forge-ai-dev.cloud-ip.cc/)
+
+---
+
+## ⚡ Key Features & Architecture
+
+- **Cinematic HUD Interface**: Dark theme (`#050505`) with custom electric-blue (`#4F8CFF`) accents, hardware-accelerated glassmorphism cards, and fluid page transitions.
+- **Interactive Engineering Journey**: A dynamic 8-stage interactive timeline showcasing project blueprints, AI agent topology graphs, system architectures, and edge computer vision processing.
+- **Live Contact Payload Gateway**: Integrated Next.js API route (`/api/contact`) sending HTML inquiry payloads directly to `needprojects123@gmail.com` using Nodemailer and Gmail SMTP authentication.
+- **Credentials & Impact Index**: Verified academic and industry credentials including:
+  - **IEDC District Cluster Level Hackathon 2026** (*Kerala Startup Mission & IEDC*)
+  - **Prompt Design in Vertex AI** (*Google Cloud*)
+  - **AWS Fundamentals Internship** (*ICT Academy of Kerala*)
+- **Mobile First Optimization**: Dynamic mobile video unmounting, touch-optimized button targets, and CSS hardware GPU acceleration for smooth 60 FPS performance on all viewports.
+- **Production Ready SEO**: Pre-rendered static pages (`SSG`), complete OpenGraph social card previews, and automated response compression.
 
 ---
 
 ## 🚀 Getting Started
 
-To run the development server locally:
+### 1. Clone & Install
 
 ```bash
+# Clone the repository
+git clone https://github.com/Devadevan-B-P/portfolio.git
+cd portfolio
+
 # Install dependencies
 npm install
+```
 
-# Run the development server
+### 2. Configure Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+# GitHub Contributions Chart (Optional)
+GITHUB_TOKEN=your_github_token
+
+# Contact Form Email Gateway
+TO_EMAIL=needprojects123@gmail.com
+GMAIL_USER=needprojects123@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_google_app_password
+```
+
+### 3. Launch Local Development Server
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) (or the port specified in terminal) to view the application.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## 🛠️ Production Build
 
-To compile and build an optimized production bundle:
+To compile and verify an optimized production bundle:
 
 ```bash
-# Build the application
+# Compile production build
 npm run build
 
-# Start the production server
+# Start local production server
 npm run start
 ```
 
@@ -39,37 +74,33 @@ npm run start
 ## 📂 Project Structure
 
 ```
-app/            Next.js App Router: Layout configurations, pages, and global CSS
-components/     Re-usable UI components (Navbar, Hero, SpotlightCard, PageLoader, etc.)
-lib/            Data schemas, local data models (data.ts), and React hooks
-public/         Static media assets, loops, and PDF downloads (Résumé)
+├── app/
+│   ├── api/
+│   │   ├── contact/           # Nodemailer email payload gateway
+│   │   └── github/            # Cached GitHub GraphQL contributions endpoint
+│   ├── contact/               # Contact page & engagement portal
+│   ├── engineering-archive/   # Project case studies & credentials catalog
+│   ├── projects/[id]/         # Dynamic project detail pages
+│   ├── resume/                # Printable professional CV page
+│   ├── globals.css            # Global design tokens & GPU utilities
+│   ├── layout.tsx             # Root layout & SEO OpenGraph metadata
+│   └── page.tsx               # Portfolio landing page
+├── components/                # Modular UI components (Hero, Navbar, Journey, etc.)
+├── lib/                       # Data schemas (data.ts) & custom React hooks
+└── public/                    # Video loops, favicon, and downloadable PDF resume
 ```
 
 ---
 
-## ⚙️ Customization Guide
+## ⚙️ Content & Customization
 
-- **Content & Contact Details**: All resume details, including your email (`needprojects123@gmail.com`), social links, education, timeline events, and projects, are managed inside [lib/data.ts](file:///c:/Users/devad/Desktop/portfolio/lib/data.ts). Edit this file to update your portfolio details.
-- **Design Tokens**: The color palette, border radiuses, and fonts are declared inside `tailwind.config.ts`. The primary accent is electric blue (`#4F8CFF`).
-- **Favicon & Logo**: The site icon is managed via [app/icon.jpg](file:///c:/Users/devad/Desktop/portfolio/app/icon.jpg). Replace this image to update your site's browser tab favicon automatically.
-- **Resume PDF**: Replace `public/Devadevan_B_P_Resume.pdf` with your updated resume file, ensuring the filename matches.
+- **Profile Data**: All project records, education metrics, social links, and credentials are managed in [`lib/data.ts`](file:///c:/Users/devad/Desktop/portfolio/lib/data.ts).
+- **Styling Tokens**: Tailwind design system and colors are defined in `tailwind.config.ts`.
+- **Site Favicon**: Managed via [`app/icon.jpg`](file:///c:/Users/devad/Desktop/portfolio/app/icon.jpg).
 
 ---
 
-## ⚡ Performance & Cross-Browser Optimizations
+## 📄 License
 
-The application incorporates a variety of state-of-the-art layout rendering and hardware performance optimizations:
+Created by **Devadevan B P** — [https://github.com/devadevan-b-p](https://github.com/devadevan-b-p)
 
-### 1. Viewport & Bandwidth Savings
-- **Dynamic Mobile Loop video bypass**: Bypasses rendering the heavy 2.5MB background `.mp4` video on mobile viewports (<768px), fallback-rendering a lightweight CSS radial-gradient backdrop. This saves mobile bandwidth and CPU cycle loads.
-- **Headline Blur Bypass**: Media queries override text blur transitions natively on screens under 768px (`filter: none !important`) to prevent GPU rendering lag and font stutter on mobile Safari and Chrome.
-
-### 2. Interaction & Coordinate tracking optimizations
-- **Coarse pointer coordinate bypass**: Spotlight cards skip mouse movement coordinate calculations on touch devices (`pointer: coarse`), preventing redundant background events.
-- **Dynamic Custom Cursor**: The custom dot and ring cursor unmounts and disables itself on mobile viewports (<768px) and touchscreens. Default system pointer behaviors are cleanly restored via CSS.
-
-### 3. Cross-Browser Smooth Rendering
-- **Compositer GPU Acceleration**: Glass containers utilize `transform: translateZ(0)` and `backface-visibility: hidden` properties to force hardware-accelerated GPU layer rendering. This prevents frame-rate stuttering during scroll animations.
-- **Firefox MacOS Font Smoothing**: Added `-moz-osx-font-smoothing: grayscale` to target subpixel antialiasing in Firefox on MacOS.
-- **Firefox Custom Scrollbars**: Integrated custom browser scrollbar color tokens (`scrollbar-width` and `scrollbar-color`) for native Firefox support.
-- **Antialiased SVGs**: Configured `shape-rendering: geometricPrecision` rules globally so that timelined blueprints and charts render with ultra-crisp antialiasing.

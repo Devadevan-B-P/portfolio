@@ -742,24 +742,34 @@ export default function EngineeringJourney() {
             </MobileSection>
 
             <MobileSection title="08 // Final Scene" icon={CheckCircle2}>
-              <div className="pt-2 max-w-sm">
+              <div className="pt-2 max-w-sm w-full">
                 <h3 className="font-display text-2xl font-bold tracking-tight text-white mb-2">Let&apos;s Build The Next One.</h3>
                 <p className="font-body text-xs text-text-secondary mb-6 leading-relaxed">
                   Open to challenging developer puzzles, microservice designs, and AI projects.
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3.5 w-full">
+                  <button 
+                    onClick={() => triggerTransition("/contact")}
+                    className="w-full bg-accent text-black font-mono font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-pill border border-accent hover:bg-white transition-all shadow-glow cursor-pointer active:scale-95"
+                  >
+                    Get In Touch
+                  </button>
                   <button 
                     onClick={() => triggerTransition("/engineering-archive")}
-                    className="glass-strong bg-accent text-black px-6 py-3 rounded-pill text-xs font-semibold uppercase tracking-wider hover:bg-white hover:text-black transition-colors w-full"
+                    className="w-full bg-white/10 text-white font-mono font-semibold text-xs uppercase tracking-wider py-3.5 px-6 rounded-pill border border-white/20 hover:bg-white/20 hover:border-accent/50 transition-all cursor-pointer active:scale-95 flex items-center justify-center gap-2"
                   >
-                    Explore My Engineering Work
+                    <span>Explore Engineering Archive</span>
+                    <ArrowRight className="h-3.5 w-3.5 text-accent" />
                   </button>
-                  <div className="flex gap-4 justify-center mt-2 text-xs">
-                    <button onClick={handleEmail} className="text-text-secondary flex items-center gap-1">
-                      <Mail className="h-3.5 w-3.5" /> Email
+                  <div className="flex gap-5 justify-center mt-3 text-xs font-mono">
+                    <button onClick={handleEmail} className="text-text-secondary hover:text-white flex items-center gap-1.5 cursor-pointer">
+                      <Mail className="h-3.5 w-3.5 text-accent" /> Email
                     </button>
-                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary flex items-center gap-1">
-                      <Github className="h-3.5 w-3.5" /> GitHub
+                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-white flex items-center gap-1.5">
+                      <Github className="h-3.5 w-3.5 text-accent" /> GitHub
+                    </a>
+                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-white flex items-center gap-1.5">
+                      <Linkedin className="h-3.5 w-3.5 text-accent" /> LinkedIn
                     </a>
                   </div>
                 </div>

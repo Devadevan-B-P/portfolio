@@ -56,7 +56,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
               </p>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3 mt-2 md:mt-0">
               <a
                 href={project.github}
                 target="_blank"
