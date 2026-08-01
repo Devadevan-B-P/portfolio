@@ -31,6 +31,7 @@ export default function ContactPage() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(profile.email);
@@ -38,16 +39,31 @@ export default function ContactPage() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.email || !formState.message || !formState.subject) return;
     setSubmitting(true);
+    setErrorMessage(null);
 
-    // Simulate transmission delay for realistic HUD feedback
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to send message payload.");
+      }
+
       setSubmitted(true);
-    }, 1200);
+    } catch (err: any) {
+      setErrorMessage(err.message || "An error occurred while sending your message.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -225,6 +241,12 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {errorMessage && (
+                    <div className="p-4 border border-red-500/30 bg-red-500/10 rounded-btn font-mono text-xs text-red-400 flex items-start gap-2">
+                      <span className="font-bold text-red-500">⚡ TRANSMISSION_ERROR:</span>
+                      <span className="leading-relaxed">{errorMessage}</span>
+                    </div>
+                  )}
                   
                   {/* Name & Email Row */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

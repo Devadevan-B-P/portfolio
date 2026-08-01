@@ -40,7 +40,7 @@ export const projects: Project[] = [
     subtitle: "Flagship Autonomous AI Engineer",
     tech: ["React", "FastAPI", "Python", "Docker", "AWS EC2", "Caddy", "MongoDB Atlas"],
     github: "https://github.com/devadevan-b-p",
-    liveDemo: "https://forge-ai.devadevan.com",
+    liveDemo: "https://forge-ai-dev.cloud-ip.cc/",
     featured: true,
     overview: "An autonomous software engineering agent system that translates natural language text prompts into fully functioning, deployed full-stack web applications.",
     problem: "Software development pipelines suffer from manual handoff latencies. Scoping requirements, detailing APIs, formatting directory trees, setting up dev servers, and deploying to servers takes hours. Simple AI coders only generate code snippets; they cannot coordinate the full multi-tier software lifecycle.",
